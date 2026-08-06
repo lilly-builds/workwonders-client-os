@@ -1,0 +1,20 @@
+# Browser profiles hold live claude.ai session cookies. Committing these would
+# hand anyone with repo access a signed-in copy of the account. Never track them.
+profiles/
+tools/**/profiles/
+
+# Pulled client projects: real business data (financials, carriers, margins).
+# Kept locally, deliberately not in the repo until that call is made explicitly.
+exports/
+tools/**/exports/
+clients/
+
+# Screen recordings are large and belong in Drive or Basecamp, not in git
+# history where they stay forever.
+demos/*.mov
+demos/*.mp4
+
+node_modules/
+.cache/
+.DS_Store
+*.log

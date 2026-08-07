@@ -1,0 +1,16 @@
+{
+  "name": "workwonders-client-os",
+  "version": "0.1.0",
+  "description": "Back up, restore, and reuse Claude projects as files",
+  "keywords": ["claude-projects", "backup", "export", "templates"],
+  "author": {
+    "name": "WorkWonders"
+  },
+  "license": "UNLICENSED",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "WorkWonders Client OS",
+    "shortDescription": "Back up Claude projects to files, and rebuild them from files",
+    "developerName": "WorkWonders"
+  }
+}

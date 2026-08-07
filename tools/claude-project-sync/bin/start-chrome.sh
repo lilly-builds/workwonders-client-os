@@ -15,8 +15,11 @@
 set -euo pipefail
 
 NAME="${1:-default}"
-HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROFILE="$HERE/profiles/$NAME"
+# Profiles live outside the repo on purpose. They hold live claude.ai session
+# cookies, and anything inside the repo folder gets copied when this is
+# installed as a plugin.
+PROFILE_ROOT="${CLAUDE_SYNC_PROFILES:-$HOME/.claude-project-sync/profiles}"
+PROFILE="$PROFILE_ROOT/$NAME"
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 # Stable port per profile name so you never have to remember which is which.

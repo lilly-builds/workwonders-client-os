@@ -15,15 +15,36 @@ change it, push it back, and prove the live project matches what you meant.
 
 | Folder | What it holds |
 | --- | --- |
+| `skills/` | The `backup-claude-projects` skill, for people who don't use a terminal |
 | `tools/claude-project-sync/` | The pull / push / diff / clone commands |
 | `templates/` | Reusable project skeletons with the client details blanked out |
 | `demos/` | Screen recordings of the workflow (videos are not committed) |
 | `docs/` | Notes and decisions |
 
-Two folders are deliberately **not** in the repo, see `.gitignore`:
+**This repo holds code only.** Working data lives outside it, on purpose:
 
-- `exports/` holds pulled client projects, which contain real client financials.
-- `profiles/` holds browser sessions, which contain live login cookies.
+- Pulled projects go wherever you point them, by default
+  `../claude-project-data/exports`. They contain real client financials.
+- Browser profiles live in `~/.claude-project-sync/profiles`. They contain live
+  claude.ai login cookies.
+
+Both are kept out because installing this as a plugin copies the whole repo
+folder, and copying session cookies into a plugin cache is not acceptable.
+
+---
+
+## For someone who doesn't use a terminal
+
+Install it as a plugin and use the skill instead of the commands.
+
+1. Install the Claude Code desktop app and sign in
+2. **+ → Plugins → Add plugin**, and point it at this repo
+3. Type `/backup-claude-projects`
+
+The skill sets up its own folder, installs what it needs, opens a Chrome window
+to sign into, and backs up every project the account can reach. It handles
+several Claude accounts one after another, which matters when projects are
+spread across a personal plan, a company account, and client accounts.
 
 ---
 

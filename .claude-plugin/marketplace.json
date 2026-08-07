@@ -1,0 +1,13 @@
+{
+  "name": "workwonders-client-os",
+  "owner": {
+    "name": "WorkWonders"
+  },
+  "plugins": [
+    {
+      "name": "workwonders-client-os",
+      "source": "./",
+      "description": "Back up Claude projects to files, and rebuild them from files"
+    }
+  ]
+}

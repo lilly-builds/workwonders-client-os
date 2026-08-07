@@ -45,9 +45,12 @@ try {
       continue;
     }
 
+    // The list endpoint reports docs_count as 0 even for projects that clearly
+    // hold knowledge files, so it is not shown here. A count that is wrong is
+    // worse than no count. Use export or backup-all to see what a project
+    // actually contains.
     for (const p of rows) {
-      const counts = `${String(p.docs_count ?? 0).padStart(3)} docs`;
-      console.log(`  ${counts}  ${p.uuid}  ${p.name}`);
+      console.log(`  ${p.uuid}  ${p.name}`);
     }
     console.log(`  ${rows.length} shown of ${total} total`);
   }

@@ -15,7 +15,7 @@ change it, push it back, and prove the live project matches what you meant.
 
 | Folder | What it holds |
 | --- | --- |
-| `skills/` | The `backup-claude-projects` skill, for people who don't use a terminal |
+| `skills/` | `backup-claude-projects` and `update-claude-project`, for people who don't use a terminal |
 | `tools/claude-project-sync/` | The pull / push / diff / clone commands |
 | `templates/` | Reusable project skeletons with the client details blanked out |
 | `demos/` | Screen recordings of the workflow (videos are not committed) |

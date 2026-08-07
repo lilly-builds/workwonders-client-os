@@ -75,6 +75,26 @@ Claude takes it from there. It will:
 **The only things you do:** answer a couple of questions, sign into Claude in
 the window it opens, and say which projects to include.
 
+## Putting files back into Claude
+
+The other command goes the other way:
+
+```
+/update-claude-project
+```
+
+Point it at a folder of project files and it will either update a project that
+already exists, or create a new one from it. Use it to apply a change, to undo
+one by restoring an older backup, or to copy a project into another Claude
+account.
+
+It always shows you exactly what will change and waits for you to agree,
+before anything happens. It calls out any file that would be removed, since
+that is the change people regret. Afterwards it reads the project back to check
+it really did what it said.
+
+It cannot delete a project.
+
 ---
 
 ## Things worth knowing

@@ -37,7 +37,7 @@ In Claude Code desktop:
 4. Paste this address:
 
    ```
-   https://github.com/WORKWONDERS-ORG/workwonders-client-os
+   https://github.com/lilly-builds/workwonders-client-os
    ```
 
 5. Pick **WorkWonders Client OS** from the list and install it

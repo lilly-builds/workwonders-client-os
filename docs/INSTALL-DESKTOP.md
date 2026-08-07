@@ -41,10 +41,16 @@ In Claude Code desktop:
    ```
 
 5. Pick **WorkWonders Client OS** from the list and install it
+6. **Quit Claude Code and open it again.** This one matters. A newly installed
+   plugin does not become available until you restart, so without this the
+   command in step 4 will look like it does not exist.
 
 If it says it cannot find the repository, that almost always means step 2 is
 incomplete: either the invitation was not accepted, or Claude Code is signed
 into a different GitHub account than the one that was invited.
+
+If `/backup-claude-projects` is not recognised after installing, you almost
+certainly skipped the restart. Quit the app fully and reopen it.
 
 ---
 

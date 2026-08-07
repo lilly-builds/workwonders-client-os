@@ -86,15 +86,44 @@ node src/list.mjs --port <port>
 If that reports it is not signed in, tell them the sign-in did not take and ask
 them to try again in that same window.
 
-## Step 4: back it up
+## Step 4: show them what is there, and ask
+
+Never back up everything without asking. A personal Claude account holds
+personal projects, and this often writes into a folder that other people can
+see. Sweeping those up would share private work with colleagues.
+
+First, list without taking anything:
 
 ```
+node src/list.mjs --port <port>
+```
+
+Show them the list grouped by organization and ask which to back up: all of
+them, or only some. If any name looks personal rather than work, point at it
+and ask specifically.
+
+Then back up what they chose:
+
+```
+# everything
 node src/backup-all.mjs --port <port> --out "<backup folder>"
+
+# only certain projects (matches part of a name, case-insensitive)
+node src/backup-all.mjs --port <port> --out "<backup folder>" --only "patriot,semper fi"
+
+# everything except some
+node src/backup-all.mjs --port <port> --out "<backup folder>" --exclude "personal,journal"
+
+# only one organization
+node src/backup-all.mjs --port <port> --out "<backup folder>" --org "WorkWonders"
 ```
 
-This takes every project the account can see, across every organization, into
-`<backup folder>/<organization>/<project name>/`, each with `instructions.md`
-and a `knowledge/` folder. Previous backups are moved aside, never overwritten.
+Add `--list` to any of those to preview exactly what it would take, without
+downloading. Worth doing when the filters are doing real work.
+
+Each project lands in `<backup folder>/<organization>/<project name>/` with its
+`instructions.md` and a `knowledge/` folder. Previous backups are moved aside,
+never overwritten.
 
 ## Step 5: another account?
 
@@ -124,6 +153,8 @@ put them somewhere shared.
   `clone.mjs` exist, but only run them on a direct request.
 - **Empty is a real answer.** A project with no instructions and no files backs
   up as an empty folder. Say so rather than treating it as a failure.
+- **Say what was left out.** If a filter skipped anything, list it. A quiet
+  omission reads as "everything is backed up" when it is not.
 - **These are business files.** Knowledge files often hold client financials.
   Do not paste their contents into chat, and do not upload them anywhere the
   person did not choose.

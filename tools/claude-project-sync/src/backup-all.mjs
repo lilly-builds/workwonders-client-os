@@ -99,6 +99,8 @@ try {
           written.push({ file_name: d.file_name, on_disk: onDisk, chars: (d.content ?? '').length });
         }
 
+        // Same two files every command writes, so a folder from here is
+        // interchangeable with one from export.mjs. See docs/FILE-STRUCTURE.md.
         writeFileSync(
           join(dir, 'project.json'),
           JSON.stringify(
@@ -106,12 +108,30 @@ try {
               uuid: detail.uuid,
               name: detail.name,
               description: detail.description,
-              organization: { uuid: org.uuid, name: org.name },
+              is_private: detail.is_private,
+              docs_count: detail.docs_count,
+              files_count: detail.files_count,
               created_at: detail.created_at,
               updated_at: detail.updated_at,
+              organization: { uuid: org.uuid, name: org.name },
+            },
+            null,
+            2
+          )
+        );
+
+        writeFileSync(
+          join(dir, 'manifest.json'),
+          JSON.stringify(
+            {
+              pulled_from: { org: org.name, org_uuid: org.uuid, project_uuid: detail.uuid },
+              source_url: `https://claude.ai/project/${detail.uuid}`,
+              pulled_at: new Date().toISOString(),
               instructions_chars: (detail.prompt_template ?? '').length,
-              knowledge_files: written,
-              attachments_not_downloaded: files.map((f) => f.file_name ?? f.uuid),
+              knowledge_files: written.length,
+              docs: written,
+              unpulled_attachments: files.map((f) => f.file_name ?? f.uuid),
+              warnings: [],
             },
             null,
             2

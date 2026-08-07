@@ -18,7 +18,7 @@ does every build and every fix.
 Basecamp, project "Lilly" (`48267142`):
 
 - [Automating + Streamlining Claude Project Setup](https://app.basecamp.com/5730006/buckets/48267142/todolists/10174920714) — the umbrella
-- [Claude Projects Troubleshooting](https://app.basecamp.com/5730006/buckets/48267142/todos/10174448479) — the ballpark project, two call transcripts, and Jim's own written recap of how the work actually happens
+- [Claude Projects Troubleshooting](https://app.basecamp.com/5730006/buckets/48267142/todos/10174448479) — the ballpark project, Jim's own description of the loop, two call transcripts, and a Claude-generated recap Jim commissioned
 - [Data Hygiene](https://app.basecamp.com/5730006/buckets/48267142/todos/10159897995) — "probably 12 hours this past weekend"
 - [RestoreOps Onboarding and Automation](https://app.basecamp.com/5730006/buckets/48267142/todos/10160054964) — where Jim wants it to end up
 
@@ -32,7 +32,8 @@ tool pointed at two businesses.
 
 ## The actual problem
 
-Not project setup. The **troubleshooting loop**. From Jim's own recap:
+Not project setup. The **troubleshooting loop**. Jim described it himself in
+the Ballpark to-do:
 
 1. Live call with the client, running test prompts in the real Claude project
 2. Screenshot the output, a dozen-plus images, paste into a *second* Claude chat
@@ -44,18 +45,30 @@ Not project setup. The **troubleshooting loop**. From Jim's own recap:
 He maxes out image uploads. Chats hit their limit and he starts a new one.
 **Screenshots are the API.**
 
-Five root causes he named:
+Root causes, from `Ballpark Project Creation Session Recap.docx` attached to
+that to-do. **Provenance matters here:** Jim's comment posting it says "I asked
+Claude to generate a recap of the project rebuild and troubleshooting." So it is
+a Claude-written analysis that Jim commissioned and endorsed by sharing, not
+Jim's own account. It lists six, grouped below into four:
 
-- **No bridge between the live project and the reviewing chat.**
-- **Flagged fixes get dropped.** Seth's "delete" fix was identified, written
-  down, and missed for three version cycles.
-- **No regression suite.** "You have to run new outputs over and over until
-  it's trustworthy."
-- **Data-model traps re-learned every time.** Cost groups duplicate per
-  document (inflating totals 2-6x); line item names are unreliable, only cost
-  codes are; searches stop at the first match instead of paginating.
-- **Filename drift and cross-project drift.** A fix on Semper Fi never
-  propagates to Patriot.
+- **JobTread's data model defeats naive assumptions.** A line item or vendor
+  name does not identify a trade; only the cost code does. "Rough In - Trade
+  Work" is reused across plumbing and electrical. A vendor called "Drywall &
+  Painting Contractor" also does tile. Learned live, by trial and error.
+- **Document-level duplication.** A full duplicate set of cost groups exists
+  per attached document, so naive summing inflates totals 2-6x. Rediscovered
+  every time a new query pattern is built.
+- **Ambiguous instruction wording caused real bugs.** "Sum every approved X and
+  Y document" was read as adding two sources that were the same total seen two
+  ways, and every figure came back double. Not a data problem, a wording one.
+- **Flagged fixes get lost, and fixes do not propagate.** Seth's relocation
+  "delete" fix was identified, written down as "will build this," and missed
+  for three version cycles until Jim asked directly. Separately, filename
+  references break on rename, and a fix on Semper Fi never reaches Patriot.
+
+The no-regression-suite point is Jim's own, from the RestoreOps to-do: "takes
+hours of checking and rechecking. You have to run new outputs over and over
+until it's trustworthy."
 
 One sentence: **every skill's trustworthiness is established by hand, and
 re-established by hand, forever.**

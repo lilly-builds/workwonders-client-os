@@ -34,14 +34,29 @@ folder, reuse them and do not ask again.
 
 ## Step 2: make sure the tool is present
 
-The tool is the `tools/claude-project-sync` folder from the
-`workwonders-client-os` repo. If it is already in the tool folder, skip ahead.
+The commands ship with this skill, at:
 
-If it is not, get it: clone the repo, or copy it from wherever it is bundled
-with this skill. Then run `npm install` inside it.
+```
+${CLAUDE_PLUGIN_ROOT}/tools/claude-project-sync
+```
 
-Check Node is available (`node --version`, needs v18+). If it is missing, say
-so plainly and offer to install it:
+**Copy that folder into the tool folder chosen in step 1, and work from the
+copy.** Do not run it from `${CLAUDE_PLUGIN_ROOT}` directly: that directory is
+replaced whenever the plugin updates, which would throw away the installed
+dependencies. If a copy is already there, leave it and skip ahead.
+
+If `${CLAUDE_PLUGIN_ROOT}` is not set, this is running from a checked-out repo
+rather than an installed plugin. Use `tools/claude-project-sync` from the repo
+instead.
+
+Then install its one dependency, in the copy:
+
+```
+npm install
+```
+
+Check Node is available first (`node --version`, needs v18+). If it is missing,
+say so plainly and offer to install it:
 
 - macOS: `brew install node`, or download from nodejs.org
 - Windows: `winget install OpenJS.NodeJS`

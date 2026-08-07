@@ -14,6 +14,16 @@ with your existing Claude account. Nothing else to configure.
 It is a normal app with a window and a chat box. You will not see a command
 line.
 
+> **Claude Code is not the same app as Claude.**
+>
+> You may already have **Claude**, the one with chats and Projects. This tool
+> lives in **Claude Code**, which is a separate app. They have separate plugin
+> systems and do not share anything.
+>
+> If you type a command and get back *"isn't a recognized command here"* or
+> *"some commands only work in the Claude Code terminal"*, you are in the
+> Claude app. Switch to Claude Code and try again.
+
 ---
 
 ## 2. Get access to the tool
@@ -122,4 +132,10 @@ error and can explain it. You do not need to decode anything yourself.
 ## Updating it later
 
 In Claude Code: **+ → Plugins**, find WorkWonders Client OS, and update it.
-Your saved settings and existing backups are not affected.
+Then quit and reopen Claude Code. Your saved settings and existing backups are
+not affected.
+
+**If Update is greyed out**, the list of available versions is out of date
+rather than there being nothing new. Refresh the plugin list first, then Update
+becomes available. If there is no refresh option, remove the plugin and add it
+again, which has the same effect.

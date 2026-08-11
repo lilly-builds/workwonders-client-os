@@ -18,6 +18,8 @@ change it, push it back, and prove the live project matches what you meant.
 | `skills/` | `backup-claude-projects` and `update-claude-project`, for people who don't use a terminal |
 | `tools/claude-project-sync/` | The pull / push / diff / clone commands |
 | `templates/` | Reusable project skeletons with the client details blanked out |
+| `templates/troubleshooting/` | Blank records for the safe troubleshooting workflow |
+| `rules/` | Reusable safety lessons that apply to every troubleshooting run |
 | `demos/` | Screen recordings of the workflow (videos are not committed) |
 | `docs/` | Notes and decisions |
 
@@ -30,6 +32,17 @@ change it, push it back, and prove the live project matches what you meant.
 
 Both are kept out because installing this as a plugin copies the whole repo
 folder, and copying session cookies into a plugin cache is not acceptable.
+
+## Troubleshooting foundation
+
+`/debug-client-project` is a safe starting point for diagnosing a client
+project. It asks one clear question at a time, says what it is doing, and ends
+by separating what is known from what still needs checking. It creates or uses
+only the blank reusable records in this repository; it does not connect to a
+client system, create a client record, or open a browser profile.
+
+See [the troubleshooting guide](docs/TROUBLESHOOTING-FOUNDATION.md) for the
+record list, required fields, and local checks.
 
 ---
 

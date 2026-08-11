@@ -1,0 +1,9 @@
+{
+  "name": "workwonders-troubleshooting-foundation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test ../../tests/troubleshooting-foundation.test.mjs",
+    "dry-run": "node src/dry-run.mjs"
+  }
+}

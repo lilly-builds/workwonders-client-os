@@ -17,6 +17,10 @@ say what is happening, ask one clear question at a time, and end with **What we
 know**, **What we do not know**, **Next owner**, and **Next action**.
 
 This foundation does not connect to client systems or create client records.
+It gets context from the person's plain-language description. Once the problem
+is clear, it may ask for an approved local path or link reference to a saved
+copy, but records it only as a pointer and does not open, retrieve, or inspect
+it.
 
 ## Blank records and required fields
 
@@ -51,7 +55,24 @@ npm run dry-run -- --out /tmp/workwonders-troubleshooting-dry-run
 ```
 
 The dry run creates all ten named reusable records with fictional local test
-data. The output is only test output; delete it after inspection.
+data. Each generated file starts with a clear fictional-data label. The command
+refuses any output folder inside this repository, preventing an accidental
+write of fake records into reusable material. The output is only test output;
+delete it after inspection.
+
+Plugin discovery was also checked locally by loading this folder as a temporary
+Claude Code plugin and invoking `/debug-client-project`. It returned the
+required opening question. This does not prove an installed plugin will survive
+an update or restart.
+
+## Future workflow, not built here
+
+The finished `/debug-client-project` workflow is expected to gather the
+problem, test likely causes, propose a fix, get Lilly's approval, apply the
+safe update, retest the original problem, check that nothing else broke, and
+document the result. This foundation implements only the safe conversation
+contract, reusable blank records, shared rules, and structural checks. It does
+not connect to Drive, Basecamp, Claude Projects, email, or live client data.
 
 ## Prompt 2 handoff
 

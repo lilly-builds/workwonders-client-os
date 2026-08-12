@@ -1,6 +1,7 @@
 ---
 record_type: Health Report
 required_fields: [report_date, scope, overall_status, known, unknown, next_owner, next_action]
+allowed_statuses: [healthy, needs review, blocked, not checked]
 ---
 # Health Report
 

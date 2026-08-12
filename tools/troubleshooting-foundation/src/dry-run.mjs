@@ -17,6 +17,7 @@ const created = await createDryRun({
   templateDir: path.join(repoRoot, 'templates/troubleshooting'),
   fixturePath: path.join(repoRoot, 'tests/fixtures/troubleshooting-fake-records.json'),
   outputDir: path.resolve(outputDir),
+  repoRoot,
 });
 
 console.log(`DRY RUN CREATED ${created.length} reusable records:`);

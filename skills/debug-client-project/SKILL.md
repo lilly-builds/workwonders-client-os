@@ -17,9 +17,12 @@ read exports, use screenshots, access credentials, or use a browser profile.
 - Never call an item **passed** unless its stated check can be performed and
   the result is recorded with evidence.
 - Keep facts, assumptions, and unanswered questions separate.
-- Do not ask for credentials, exports, screenshots, or client facts in this
-  foundation. If they are needed, say that the next approved workflow must
-  collect them outside this reusable-material repository.
+- Do not ask for credentials, exports, screenshots, or pasted client facts.
+- You may ask for an **approved local path or link reference** to a saved copy
+  after the problem is clear. Record it only as a pointer in the Project
+  Register; do not open the link, inspect the location, or copy its contents.
+  The person running the workflow remains responsible for choosing the approved
+  local working area.
 
 ## Command contract
 
@@ -39,6 +42,24 @@ After each answer, briefly say what it means and ask the single next question
 that is necessary to clarify the problem. Use the templates in
 `templates/troubleshooting/` as the blank record shapes and
 `rules/troubleshooting-shared-rules.md` for safety lessons.
+
+When a pointer to the approved saved copy is needed, ask only:
+
+> Where is the approved saved copy for this project? Share a local path or link
+> reference only. Please do not paste client information or credentials here.
+
+The current foundation gets its context from the person's plain-language
+description and, when supplied, that pointer. It does not retrieve or verify
+anything at the pointer. A future approved adapter may use it outside this
+repository's reusable-material boundary.
+
+## Future workflow, not built here
+
+The finished workflow is intended to gather the problem, test likely causes,
+propose a fix, get Lilly's approval, apply a safe update, retest the original
+problem, check that nothing else broke, and document the result. This skill
+only establishes the intake, record shapes, safety rules, and evidence bar for
+that future work.
 
 ## Finish every session
 

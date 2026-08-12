@@ -1,6 +1,7 @@
 ---
 record_type: Data Integrity Report
 required_fields: [report_id, data_area, check_method, finding, evidence_reference, status, checked_by, checked_on, owner, next_action]
+allowed_statuses: [not checked, needs review, blocked, passed]
 ---
 # Data Integrity Report
 

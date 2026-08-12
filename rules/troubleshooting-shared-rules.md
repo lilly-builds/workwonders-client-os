@@ -18,3 +18,17 @@ not client facts.
    templates, fictional test data, rules, and documentation only. Never add
    client names, facts, exports, screenshots, credentials, or browser
    profiles.
+7. **Use cost codes.** Use the agreed cost code to identify work. Do not infer
+   a trade from a vendor name or a line-item description.
+8. **Check every page.** A result is not complete until every relevant page or
+   section has been checked and any omission is recorded.
+9. **Keep materials separate from trade-partner costs.** Do not combine them
+   unless the agreed source and calculation explicitly say to do so.
+10. **Ignore denied bills.** Denied bills are not part of an approved-cost
+    check unless the question specifically asks for them.
+11. **Do not compare cost with price.** They answer different questions and
+    must stay in separate checks.
+12. **Use one agreed source.** Name the single trusted source for a number.
+    Do not merge values from competing sources without an explicit rule.
+13. **Say when a number cannot be checked.** Use `not checked`, `blocked`, or
+    `needs review`; never turn missing evidence into a pass.

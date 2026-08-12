@@ -13,6 +13,10 @@
   issue, health-report, and release IDs regardless of filename. A changed or
   malformed existing record stops setup with a conflict instead of being
   silently reused.
+- **Canonical records:** generated Project Register, Issue & Fix Log, Health
+  Report, and Release Record files use the exact Phase 1 `record_type` values
+  and include every required template field. Tests run their generated
+  front matter through the Phase 1 validator.
 - **Saved-copy boundary:** a saved-copy value is only a caller-supplied
   pointer. The adapter does not find, copy, read, or verify a Claude Project
   backup.

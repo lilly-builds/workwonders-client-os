@@ -39,6 +39,11 @@ saved-copy pointer. The pointer is not a claim that a backup was found,
 copied, read, or verified. Repeat setup reuses matching records, but any
 duplicate ID, changed record, or malformed record stops with a conflict.
 
+Generated records keep the canonical Phase 1 names and fields: `Project
+Register`, `Issue & Fix Log`, `Health Report`, and `Release Record`. They are
+not a second simplified record format; missing business details are written as
+`not yet provided` so the Phase 1 validator can inspect them.
+
 Use `--mode fake` for local fictional tests. Use `--mode approved` only for a
 future explicitly approved client folder; it does not add a fictional label.
 

@@ -9,8 +9,7 @@ export const CORE_FILES = [
   '04 Test Library.md',
 ];
 export const CORE_DIRECTORIES = ['reports', 'issues', 'releases', 'project-backups'];
-const RECORD_LOCATIONS = { Project: '01 Project Register.md', Issue: 'issues', 'Health Report': 'reports', 'Release Record': 'releases' };
-const ID_FIELDS = { Project: 'project_id', Issue: 'issue_id', 'Health Report': 'report_id', 'Release Record': 'release_id' };
+const ID_FIELDS = { 'Project Register': 'project_id', 'Issue & Fix Log': 'issue_id', 'Health Report': 'report_id', 'Release Record': 'release_id' };
 
 const safePart = (value, label) => {
   if (typeof value !== 'string' || !value.trim() || value.includes('/') || value.includes('\\') || value === '.' || value === '..' || /[\0\r\n]/.test(value)) {
@@ -59,7 +58,7 @@ function recordLabel(mode) {
 function coreContent(file, clientName, project, mode) {
   const base = `# ${file.replace(/\.md$/, '')}\n\n${recordLabel(mode)}\nClient: ${clientName}\nProject: ${project.name} (${project.id})\n`;
   if (file === '00 Start Here.md') return `${base}\nThis folder is the single shared home for this client project. The repository holds reusable rules and blank templates; this folder holds client-specific records.\n\n- Project record: [01 Project Register.md](./01%20Project%20Register.md)\n- Issue and fix log: [02 Issue and Fix Log.md](./02%20Issue%20and%20Fix%20Log.md)\n- Reports: [reports](./reports/)\n- Saved project-copy pointers: [project-backups](./project-backups/)\n\nDrive assumption: this is an explicit local path that may later be inside a Drive-synced folder. Sync and sharing permissions are not checked by this local adapter.\n`;
-  if (file === '01 Project Register.md') return `${frontMatter({ record_type: 'Project', project_id: project.id })}${base}\n## Project\n\n- Project ID: ${project.id}\n- Project name: ${project.name}\n- Saved-copy pointer: ${project.savedCopyLocation || 'Not supplied'}\n- Project backups folder: [project-backups](./project-backups/)\n- Status: active\n\nThe saved-copy entry is only a pointer supplied by the caller. This adapter does not find, copy, read, or verify a Claude Project backup.\n`;
+  if (file === '01 Project Register.md') return `${frontMatter({ record_type: 'Project Register', project_id: project.id, project_label: project.name, claude_account: 'not yet provided', source_list: 'not yet provided', saved_copy_location: project.savedCopyLocation || 'not yet provided', project_purpose: 'not yet provided', status: 'active', owner: 'not yet provided', trusted_source_reference: 'not yet provided' })}${base}\n## Project\n\n- Project ID: ${project.id}\n- Project label: ${project.name}\n- Claude account: not yet provided\n- Source list: not yet provided\n- Saved-copy pointer: ${project.savedCopyLocation || 'not yet provided'}\n- Project purpose: not yet provided\n- Status: active\n- Owner: not yet provided\n- Trusted source reference: not yet provided\n\nThe saved-copy entry is only a pointer supplied by the caller. This adapter does not find, copy, read, or verify a Claude Project backup.\n`;
   if (file === '02 Issue and Fix Log.md') return `${base}\nEach issue file must name its project ID, report links, and saved-copy pointer.\n\n## Issues\n\nNo issues recorded yet.\n`;
   if (file === '03 Trusted Sources.md') return `${base}\nNo trusted sources recorded yet.\n`;
   return `${base}\nNo test records recorded yet.\n`;
@@ -100,21 +99,21 @@ async function inspectRecords(root) {
       records.push({ file, text, fields, type: expectedType, id: fields[idField] });
     }
   };
-  await add(path.join(root, '01 Project Register.md'), 'Project').catch((error) => { if (error.code !== 'ENOENT') throw error; });
-  for (const [type, directory] of [['Issue', 'issues'], ['Health Report', 'reports'], ['Release Record', 'releases']]) {
+  await add(path.join(root, '01 Project Register.md'), 'Project Register').catch((error) => { if (error.code !== 'ENOENT') throw error; });
+  for (const [type, directory] of [['Issue & Fix Log', 'issues'], ['Health Report', 'reports'], ['Release Record', 'releases']]) {
     for (const file of await filesUnder(path.join(root, directory))) await add(file, type);
   }
   const seen = new Map();
   for (const record of records) {
     const key = `${record.type}:${record.id}`;
     if (seen.has(key)) {
-      const label = record.type === 'Issue' ? 'issue' : record.type;
+      const label = record.type === 'Issue & Fix Log' ? 'issue' : record.type === 'Project Register' ? 'project' : record.type;
       errors.push(`Duplicate ${label} ID: ${record.id} (${path.relative(root, seen.get(key))} and ${path.relative(root, record.file)}).`);
     }
     else seen.set(key, record.file);
   }
-  const projectIds = new Set(records.filter((record) => record.type === 'Project').map((record) => record.id));
-  for (const record of records.filter((item) => item.type !== 'Project')) {
+  const projectIds = new Set(records.filter((record) => record.type === 'Project Register').map((record) => record.id));
+  for (const record of records.filter((item) => item.type !== 'Project Register')) {
     const projectId = record.fields.project_id || record.fields.target_project_id;
     if (projectId && !projectIds.has(projectId)) errors.push(`Unknown project reference: ${projectId} in ${path.relative(root, record.file)}.`);
   }
@@ -130,7 +129,7 @@ export async function validateControlCenter(outputDir, { projectIds = [], repoRo
   const inspected = await inspectRecords(root);
   errors.push(...inspected.errors);
   const known = new Set([...projectIds, ...inspected.projectIds]);
-  for (const record of inspected.records.filter((item) => item.type !== 'Project')) {
+  for (const record of inspected.records.filter((item) => item.type !== 'Project Register')) {
     const projectId = record.fields.project_id || record.fields.target_project_id;
     if (projectId && !known.has(projectId)) errors.push(`Unknown project reference: ${projectId} in ${path.relative(root, record.file)}.`);
   }
@@ -150,7 +149,7 @@ async function writeOnce(file, content) {
 }
 
 function requestedIds({ project, issues, reports, releases }) {
-  const entries = [['Project', project.id], ...issues.map((item) => ['Issue', item.issueId]), ...reports.map((item) => ['Health Report', item.reportId || 'REPORT-FAKE']), ...releases.map((item) => ['Release Record', item.releaseId || 'RELEASE-FAKE'])];
+  const entries = [['Project Register', project.id], ...issues.map((item) => ['Issue & Fix Log', item.issueId]), ...reports.map((item) => ['Health Report', item.reportId || 'REPORT-FAKE']), ...releases.map((item) => ['Release Record', item.releaseId || 'RELEASE-FAKE'])];
   const seen = new Set();
   for (const [type, id] of entries) {
     const key = `${type}:${id}`;
@@ -188,27 +187,29 @@ export async function setupControlCenter({ outputDir, clientName, project, issue
   const results = [];
   for (const file of CORE_FILES) {
     const content = coreContent(file, clientName, project, mode);
-    if (file === '01 Project Register.md') checkRequested('Project', project.id, content);
+    if (file === '01 Project Register.md') checkRequested('Project Register', project.id, content);
     results.push(await writeOnce(path.join(root, file), content));
   }
   for (const issue of issues) {
     const file = datedName(issue.date || new Date(), `${issue.issueId} ${issue.title}`, '');
     const target = path.join(root, 'issues', file);
-    const content = `${frontMatter({ record_type: 'Issue', issue_id: issue.issueId, project_id: issue.projectId })}# ${issue.issueId}: ${issue.title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nReports: ${(issue.reportFiles || []).map((name) => `[${name}](../reports/${encodeURIComponent(name)})`).join(', ') || 'None yet'}\nSaved-copy pointer: ${issue.savedCopyLocation || project.savedCopyLocation || 'Not supplied'} (not copied or verified)\nStatus: ${issue.status || 'not_checked'}\n`;
-    const existing = checkRequested('Issue', issue.issueId, content, target);
+    const content = `${frontMatter({ record_type: 'Issue & Fix Log', issue_id: issue.issueId, symptoms: issue.symptoms || issue.title, proven_root_cause: issue.provenRootCause || 'not yet provided', solution: issue.solution || 'not yet provided', permanent_check: issue.permanentCheck || 'not yet provided', resolution_date: issue.resolutionDate || 'not resolved', evidence_reference: issue.evidenceReference || 'not yet provided', impact: issue.impact || 'not yet provided', owner: issue.owner || 'not yet provided', status: issue.status || 'open', project_id: issue.projectId })}# ${issue.issueId}: ${issue.title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nReports: ${(issue.reportFiles || []).map((name) => `[${name}](../reports/${encodeURIComponent(name)})`).join(', ') || 'None yet'}\nSaved-copy pointer: ${issue.savedCopyLocation || project.savedCopyLocation || 'Not supplied'} (not copied or verified)\nStatus: ${issue.status || 'open'}\n`;
+    const existing = checkRequested('Issue & Fix Log', issue.issueId, content, target);
     results.push(existing ? { file: existing.file, created: false } : await writeOnce(target, content));
   }
   for (const report of reports) {
     const id = report.reportId || 'REPORT-FAKE';
     const target = path.join(root, 'reports', datedName(report.date || new Date(), report.title, ' Health Report'));
-    const content = `${frontMatter({ record_type: 'Health Report', report_id: id, project_id: project.id })}# ${report.title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nSaved-copy pointer: ${report.savedCopyLocation || project.savedCopyLocation || 'Not supplied'} (not copied or verified)\n`;
+    const reportDate = report.date || new Date().toISOString().slice(0, 10);
+    const content = `${frontMatter({ record_type: 'Health Report', report_id: id, report_date: reportDate, scope: report.scope || project.name, overall_status: report.overallStatus || 'not checked', known: report.known || 'not yet provided', unknown: report.unknown || 'not yet provided', next_owner: report.nextOwner || 'not yet provided', next_action: report.nextAction || 'not yet provided', project_id: project.id })}# ${report.title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nSaved-copy pointer: ${report.savedCopyLocation || project.savedCopyLocation || 'Not supplied'} (not copied or verified)\n`;
     const existing = checkRequested('Health Report', id, content, target);
     results.push(existing ? { file: existing.file, created: false } : await writeOnce(target, content));
   }
   for (const release of releases) {
     const id = release.releaseId || 'RELEASE-FAKE';
     const target = path.join(root, 'releases', datedName(release.date || new Date(), release.title, ' Release Record'));
-    const content = `${frontMatter({ record_type: 'Release Record', release_id: id, target_project_id: project.id })}# ${release.title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nSaved-copy pointer: ${release.savedCopyLocation || project.savedCopyLocation || 'Not supplied'} (not copied or verified)\n`;
+    const releaseDate = release.date || new Date().toISOString().slice(0, 10);
+    const content = `${frontMatter({ record_type: 'Release Record', release_id: id, target_project_id: project.id, change_summary: release.changeSummary || 'not yet provided', approved_file_list: release.approvedFileList || 'not yet provided', included_records: release.includedRecords || 'not yet provided', verification_status: release.verificationStatus || 'not checked', check_method: release.checkMethod || 'not yet provided', checked_by: release.checkedBy || 'not yet provided', checked_on: release.checkedOn || 'not yet provided', evidence_reference: release.evidenceReference || 'not yet provided', post_update_comparison_result: release.postUpdateComparisonResult || 'not run', client_email_required: release.clientEmailRequired || 'no', approver: release.approver || 'not yet provided', release_date: releaseDate, rollback_action: release.rollbackAction || 'not yet provided' })}# ${release.title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nSaved-copy pointer: ${release.savedCopyLocation || project.savedCopyLocation || 'Not supplied'} (not copied or verified)\n`;
     const existing = checkRequested('Release Record', id, content, target);
     results.push(existing ? { file: existing.file, created: false } : await writeOnce(target, content));
   }

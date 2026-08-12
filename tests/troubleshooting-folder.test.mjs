@@ -4,15 +4,20 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { CORE_DIRECTORIES, CORE_FILES, setupControlCenter, validateControlCenter } from '../tools/troubleshooting-folder/src/control-center.mjs';
+import { loadTemplateDefinitions, validateRecordCollection } from '../tools/troubleshooting-foundation/src/records.mjs';
 
 const fake = { clientName: 'Fictional Harbor Co', project: { id: 'PROJECT-FAKE-001', name: 'Fictional Margin Helper', savedCopyLocation: 'project-backups/Fictional Margin Helper/' } };
 async function temp() { return mkdtemp(path.join(os.tmpdir(), 'workwonders-control-center-')); }
+function frontMatterRecord(text) {
+  const block = text.match(/^---\n([\s\S]*?)\n---/m)?.[1];
+  return Object.fromEntries((block || '').split('\n').map((line) => line.match(/^([^:]+):\s*(.*)$/)).filter(Boolean).map(([, key, value]) => [key.trim(), value.trim()]));
+}
 
 test('first setup creates the agreed layout and linked fake records', async () => {
   const root = await temp();
   try {
-    const result = await setupControlCenter({ mode: 'fake', outputDir: root, ...fake, issues: [{ issueId: 'ISSUE-FAKE-001', title: 'Margin total differs', projectId: fake.project.id, date: '2026-08-12', reportFiles: ['2026-08-12 Health Report.md'] }], reports: [{ title: 'Morning check', reportId: 'REPORT-FAKE-001', date: '2026-08-12' }] });
-    assert.equal(result.created.length, 7);
+    const result = await setupControlCenter({ mode: 'fake', outputDir: root, ...fake, issues: [{ issueId: 'ISSUE-FAKE-001', title: 'Margin total differs', projectId: fake.project.id, date: '2026-08-12', reportFiles: ['2026-08-12 Health Report.md'] }], reports: [{ title: 'Morning check', reportId: 'REPORT-FAKE-001', date: '2026-08-12' }], releases: [{ title: 'Initial release', releaseId: 'RELEASE-FAKE-001', date: '2026-08-12' }] });
+    assert.equal(result.created.length, 8);
     for (const file of CORE_FILES) await readFile(path.join(root, file));
     for (const directory of CORE_DIRECTORIES) assert.ok((await lstat(path.join(root, directory))).isDirectory());
     const issue = await readFile(path.join(root, 'issues', (await readdir(path.join(root, 'issues')))[0]), 'utf8');
@@ -20,6 +25,10 @@ test('first setup creates the agreed layout and linked fake records', async () =
     assert.match(issue, /reports\/2026-08-12%20Health%20Report\.md/);
     assert.match(issue, /project-backups/);
     assert.deepEqual(await validateControlCenter(root), []);
+    const definitions = await loadTemplateDefinitions(path.join(path.dirname(new URL(import.meta.url).pathname), '../templates/troubleshooting'));
+    const records = [];
+    for (const file of [path.join(root, '01 Project Register.md'), path.join(root, 'issues', (await readdir(path.join(root, 'issues')))[0]), path.join(root, 'reports', (await readdir(path.join(root, 'reports')))[0]), path.join(root, 'releases', (await readdir(path.join(root, 'releases')))[0])]) records.push(frontMatterRecord(await readFile(file, 'utf8')));
+    assert.deepEqual(validateRecordCollection(records, definitions), []);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
@@ -66,8 +75,8 @@ test('same issue ID with a changed title or date is a conflict, not a second rec
   try {
     const base = { mode: 'fake', outputDir: root, ...fake, issues: [{ issueId: 'ISSUE-FAKE-002', title: 'Original symptom', projectId: fake.project.id, date: '2026-08-12' }] };
     await setupControlCenter(base);
-    await assert.rejects(setupControlCenter({ ...base, issues: [{ ...base.issues[0], title: 'Renamed symptom' }] }), /existing Issue ISSUE-FAKE-002 differs/);
-    await assert.rejects(setupControlCenter({ ...base, issues: [{ ...base.issues[0], date: '2026-08-13' }] }), /existing Issue ISSUE-FAKE-002 (differs|has a different record name)/);
+    await assert.rejects(setupControlCenter({ ...base, issues: [{ ...base.issues[0], title: 'Renamed symptom' }] }), /existing Issue & Fix Log ISSUE-FAKE-002 differs/);
+    await assert.rejects(setupControlCenter({ ...base, issues: [{ ...base.issues[0], date: '2026-08-13' }] }), /existing Issue & Fix Log ISSUE-FAKE-002 (differs|has a different record name)/);
     assert.equal((await readdir(path.join(root, 'issues'))).length, 1);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
@@ -80,7 +89,7 @@ test('validation catches duplicate project, report, and release IDs', async () =
     await writeFile(path.join(root, 'reports', 'duplicate-report.md'), '---\nrecord_type: Health Report\nreport_id: REPORT-FAKE-002\nproject_id: PROJECT-FAKE-001\n---\n');
     await writeFile(path.join(root, 'releases', 'duplicate-release.md'), '---\nrecord_type: Release Record\nrelease_id: RELEASE-FAKE-002\ntarget_project_id: PROJECT-FAKE-001\n---\n');
     const errors = await validateControlCenter(root);
-    assert.ok(errors.some((error) => error.includes('Duplicate Project ID: PROJECT-FAKE-001')));
+    assert.ok(errors.some((error) => error.includes('Duplicate project ID: PROJECT-FAKE-001')));
     assert.ok(errors.some((error) => error.includes('Duplicate Health Report ID: REPORT-FAKE-002')));
     assert.ok(errors.some((error) => error.includes('Duplicate Release Record ID: RELEASE-FAKE-002')));
   } finally { await rm(root, { recursive: true, force: true }); }
@@ -93,7 +102,7 @@ test('setup stops on a changed or malformed existing record', async () => {
     await setupControlCenter(input);
     const issueFile = path.join(root, 'issues', (await readdir(path.join(root, 'issues')))[0]);
     await writeFile(issueFile, 'this is not a valid issue record');
-    await assert.rejects(setupControlCenter(input), /Control Center conflict: Malformed Issue record/);
+    await assert.rejects(setupControlCenter(input), /Control Center conflict: Malformed Issue & Fix Log record/);
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 

@@ -16,17 +16,19 @@ The plugin exposes `/debug-client-project` through
 say what is happening, ask one clear question at a time, and end with **What we
 know**, **What we do not know**, **Next owner**, and **Next action**.
 
-This foundation does not connect to client systems or create client records.
-It gets context from the person's plain-language description. Once the problem
-is clear, it may ask for an approved local path or link reference to a saved
-copy, but records it only as a pointer and does not open, retrieve, or inspect
-it.
+This foundation does not connect to client systems or create client records. It
+gets context only from the person's plain-language description. Later phases
+may collect an approved saved-copy path and write it to the Project Register.
+This foundation does not open, read, or write client records.
 
 ## Blank records and required fields
 
 The ten record shapes are in `templates/troubleshooting/`. Each declares its
 own `required_fields` list in its header. The validator rejects a fake or
 future local record that omits one of those fields.
+
+The templates are blank reference material in this phase. Template use and
+record creation have not yet been proven inside a real Claude Code conversation.
 
 For any record that uses `passed` as its status, the validator also requires:
 

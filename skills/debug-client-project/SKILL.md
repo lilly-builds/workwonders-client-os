@@ -18,11 +18,6 @@ read exports, use screenshots, access credentials, or use a browser profile.
   the result is recorded with evidence.
 - Keep facts, assumptions, and unanswered questions separate.
 - Do not ask for credentials, exports, screenshots, or pasted client facts.
-- You may ask for an **approved local path or link reference** to a saved copy
-  after the problem is clear. Record it only as a pointer in the Project
-  Register; do not open the link, inspect the location, or copy its contents.
-  The person running the workflow remains responsible for choosing the approved
-  local working area.
 
 ## Command contract
 
@@ -43,15 +38,13 @@ that is necessary to clarify the problem. Use the templates in
 `templates/troubleshooting/` as the blank record shapes and
 `rules/troubleshooting-shared-rules.md` for safety lessons.
 
-When a pointer to the approved saved copy is needed, ask only:
+The current foundation gets context only from the person's plain-language
+description. It does not retrieve, verify, save, or update client context.
+Later phases may collect an approved saved-copy path and write it to the
+Project Register. This foundation does not open, read, or write client records.
 
-> Where is the approved saved copy for this project? Share a local path or link
-> reference only. Please do not paste client information or credentials here.
-
-The current foundation gets its context from the person's plain-language
-description and, when supplied, that pointer. It does not retrieve or verify
-anything at the pointer. A future approved adapter may use it outside this
-repository's reusable-material boundary.
+The templates are reference material for the future workflow. Their use and
+record creation have not yet been proven inside a real Claude Code conversation.
 
 ## Future workflow, not built here
 

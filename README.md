@@ -37,9 +37,10 @@ folder, and copying session cookies into a plugin cache is not acceptable.
 
 `/debug-client-project` is a safe starting point for diagnosing a client
 project. It asks one clear question at a time, says what it is doing, and ends
-by separating what is known from what still needs checking. It creates or uses
-only the blank reusable records in this repository; it does not connect to a
-client system, create a client record, or open a browser profile.
+by separating what is known from what still needs checking. It uses the blank
+reusable records in this repository as future reference material; it does not
+yet create a client record, connect to a client system, or open a browser
+profile.
 
 See [the troubleshooting guide](docs/TROUBLESHOOTING-FOUNDATION.md) for the
 record list, required fields, and local checks.

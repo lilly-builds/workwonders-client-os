@@ -3,9 +3,10 @@
 ## Implemented
 
 - **Command entry point:** `skills/debug-client-project/SKILL.md`. It gives
-  `/debug-client-project` a one-question-at-a-time conversation contract,
-  records an approved local path or link only as a pointer, and ends with known,
-  unknown, owner, and next action.
+  `/debug-client-project` a one-question-at-a-time conversation contract and
+  ends with known, unknown, owner, and next action. It gathers only the initial
+  plain-language problem description; it does not create or update a Project
+  Register.
 - **Reusable material:** `templates/troubleshooting/` has all ten blank record
   shapes; `rules/troubleshooting-shared-rules.md` contains shared safety rules.
 - **Required fields:** every template declares `required_fields`. A `passed`
@@ -35,6 +36,8 @@ The dry run creates ten files, each clearly labelled fictional local test data.
 - Plugin discovery was proven once through Claude Code's temporary local plugin
   loader. A normal installed-plugin session, a plugin update, and a restart
   have not been tested.
+- Template use and record creation are not yet proven inside a real Claude Code
+  conversation.
 - The existing `tools/claude-project-sync` package has no `test` script, so no
   repository-provided automated sync-tool test exists to run.
 - No Drive, Basecamp, Claude Projects, email, or live client data was accessed.
@@ -42,8 +45,8 @@ The dry run creates ten files, each clearly labelled fictional local test data.
 ## What Prompt 2 may build next
 
 Prompt 2 may add a safe local Drive-synced-folder adapter around these records,
-outside this repository's reusable-material boundary. It may use the approved
-path or link pointer only after the user approves it. It must preserve required
-fields, the checkable-`passed` rule, the fictional-fixture label, and the
-repository-write guard. It must not create a Drive folder or put
-client-specific material in this repository.
+outside this repository's reusable-material boundary. Later phases may collect
+an approved saved-copy path and write it to the Project Register. They must
+preserve required fields, the checkable-`passed` rule, the fictional-fixture
+label, and the repository-write guard. They must not create a Drive folder or
+put client-specific material in this repository.

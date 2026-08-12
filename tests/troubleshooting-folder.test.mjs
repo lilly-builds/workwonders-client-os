@@ -95,6 +95,19 @@ test('validation catches duplicate project, report, and release IDs', async () =
   } finally { await rm(root, { recursive: true, force: true }); }
 });
 
+test('validation rejects a correctly named record that omits canonical required fields', async () => {
+  const root = await temp();
+  try {
+    await setupControlCenter({ mode: 'fake', outputDir: root, ...fake, reports: [{ title: 'Morning check', reportId: 'REPORT-FAKE-003', date: '2026-08-12' }] });
+    const reportFile = path.join(root, 'reports', (await readdir(path.join(root, 'reports')))[0]);
+    await writeFile(reportFile, '---\nrecord_type: Health Report\nreport_id: REPORT-FAKE-003\n---\n# Missing fields\n');
+    const errors = await validateControlCenter(root);
+    assert.ok(errors.some((error) => error.includes('Health Report: Missing required field: report_date')));
+    assert.ok(errors.some((error) => error.includes('Health Report: Missing required field: scope')));
+    assert.ok(errors.some((error) => error.includes('Health Report: Missing required field: next_owner')));
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
 test('setup stops on a changed or malformed existing record', async () => {
   const root = await temp();
   try {

@@ -16,7 +16,9 @@
 - **Canonical records:** generated Project Register, Issue & Fix Log, Health
   Report, and Release Record files use the exact Phase 1 `record_type` values
   and include every required template field. Tests run their generated
-  front matter through the Phase 1 validator.
+  front matter through the Phase 1 validator. Folder validation also runs
+  manually edited records through that same validator and rejects missing
+  required fields.
 - **Saved-copy boundary:** a saved-copy value is only a caller-supplied
   pointer. The adapter does not find, copy, read, or verify a Claude Project
   backup.

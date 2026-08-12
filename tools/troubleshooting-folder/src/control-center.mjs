@@ -1,5 +1,7 @@
 import { access, lstat, mkdir, readFile, readdir, realpath, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { loadTemplateDefinitions, validateRecordCollection } from '../../troubleshooting-foundation/src/records.mjs';
 
 export const CORE_FILES = [
   '00 Start Here.md',
@@ -128,6 +130,9 @@ export async function validateControlCenter(outputDir, { projectIds = [], repoRo
   for (const directory of CORE_DIRECTORIES) { try { if (!(await lstat(path.join(root, directory))).isDirectory()) errors.push(`Core path is not a folder: ${directory}`); } catch { errors.push(`Missing core folder: ${directory}`); } }
   const inspected = await inspectRecords(root);
   errors.push(...inspected.errors);
+  const templateDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../templates/troubleshooting');
+  const definitions = await loadTemplateDefinitions(templateDir);
+  errors.push(...validateRecordCollection(inspected.records.map((record) => record.fields), definitions));
   const known = new Set([...projectIds, ...inspected.projectIds]);
   for (const record of inspected.records.filter((item) => item.type !== 'Project Register')) {
     const projectId = record.fields.project_id || record.fields.target_project_id;
@@ -174,7 +179,10 @@ export async function setupControlCenter({ outputDir, clientName, project, issue
   const existingCore = (await Promise.all(CORE_FILES.map(async (file) => { try { await access(path.join(root, file)); return true; } catch { return false; } }))).some(Boolean);
   const existingRecordFiles = (await Promise.all(['issues', 'reports', 'releases'].map((directory) => filesUnder(path.join(root, directory))))).some((files) => files.length > 0);
   const hasExistingContent = inspected.records.length > 0 || existingCore || existingRecordFiles;
-  if (hasExistingContent && inspected.errors.length) throw new Error(`Control Center conflict: ${inspected.errors.join(' ')}`);
+  if (hasExistingContent) {
+    const existingValidationErrors = await validateControlCenter(root, { repoRoot });
+    if (existingValidationErrors.length) throw new Error(`Control Center conflict: ${existingValidationErrors.join(' ')}`);
+  }
   const existingById = new Map(inspected.records.map((record) => [`${record.type}:${record.id}`, record]));
   const checkRequested = (type, id, content, target) => {
     const existing = existingById.get(`${type}:${id}`);

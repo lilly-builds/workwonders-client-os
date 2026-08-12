@@ -37,7 +37,8 @@ Optional issue, report, and release records are written into their matching
 folders. Issue records include links to their project record, reports, and a
 saved-copy pointer. The pointer is not a claim that a backup was found,
 copied, read, or verified. Repeat setup reuses matching records, but any
-duplicate ID, changed record, or malformed record stops with a conflict.
+duplicate ID, changed record, malformed record, or missing required field
+stops with a conflict.
 
 Generated records keep the canonical Phase 1 names and fields: `Project
 Register`, `Issue & Fix Log`, `Health Report`, and `Release Record`. They are
@@ -63,8 +64,8 @@ npm run validate --prefix tools/troubleshooting-folder -- /absolute/path/to/Clie
 
 The tests cover first setup, repeat setup, missing core files, unknown project
 references, duplicate project/issue/report/release IDs, changed issue titles
-or dates, malformed existing records, unsafe paths, fake-versus-approved
-labels, and no-duplicate behavior.
+or dates, malformed or incomplete existing records, unsafe paths,
+fake-versus-approved labels, and no-duplicate behavior.
 
 ## Handoff decisions still needed
 

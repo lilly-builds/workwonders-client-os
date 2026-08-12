@@ -8,6 +8,7 @@ Google Drive, create a cloud folder, inspect permissions, or read client data.
 
 ```text
 npm run setup --prefix tools/troubleshooting-folder -- \
+  --mode fake \
   --out /absolute/path/to/Client\ Project\ Control\ Center \
   --client "Fictional Harbor Co" \
   --project-id PROJECT-FAKE-001 \
@@ -33,9 +34,13 @@ Client Project Control Center/
 ```
 
 Optional issue, report, and release records are written into their matching
-folders. Issue records include links to their project record, reports, and
-saved-copy folder. Repeat setup reuses the same named records and does not
-make extra editable copies.
+folders. Issue records include links to their project record, reports, and a
+saved-copy pointer. The pointer is not a claim that a backup was found,
+copied, read, or verified. Repeat setup reuses matching records, but any
+duplicate ID, changed record, or malformed record stops with a conflict.
+
+Use `--mode fake` for local fictional tests. Use `--mode approved` only for a
+future explicitly approved client folder; it does not add a fictional label.
 
 ## Fake smoke output
 
@@ -52,7 +57,9 @@ npm run validate --prefix tools/troubleshooting-folder -- /absolute/path/to/Clie
 ```
 
 The tests cover first setup, repeat setup, missing core files, unknown project
-references, duplicate issue IDs, unsafe paths, and no-duplicate behavior.
+references, duplicate project/issue/report/release IDs, changed issue titles
+or dates, malformed existing records, unsafe paths, fake-versus-approved
+labels, and no-duplicate behavior.
 
 ## Handoff decisions still needed
 

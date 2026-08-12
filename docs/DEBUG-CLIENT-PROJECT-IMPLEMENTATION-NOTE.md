@@ -1,52 +1,65 @@
 # Debug client project — implementation note
 
-## Implemented
+## Implemented through Phase 2
 
-- **Command entry point:** `skills/debug-client-project/SKILL.md`. It gives
-  `/debug-client-project` a one-question-at-a-time conversation contract and
-  ends with known, unknown, owner, and next action. It gathers only the initial
-  plain-language problem description; it does not create or update a Project
-  Register.
-- **Reusable material:** `templates/troubleshooting/` has all ten blank record
-  shapes; `rules/troubleshooting-shared-rules.md` contains shared safety rules.
-- **Required fields:** every template declares `required_fields`. A `passed`
-  result needs a check method, evidence reference, checker, and check date.
-- **Safety checks:** the fake-data validator rejects missing required fields,
-  duplicate record IDs, invalid statuses, uncheckable passes, missing rollback
-  actions, missing project IDs, and incomplete test records. It refuses to
-  write a dry run inside this repository.
+- **Phase 1 foundation:** `skills/debug-client-project/SKILL.md` provides the
+  one-question-at-a-time intake contract, shared rules, blank record shapes,
+  and the checkable-evidence rule for any `passed` result.
+- **Phase 2 folder adapter:** `tools/troubleshooting-folder` creates and
+  validates a local `Client Project Control Center` at an explicit absolute
+  path. It creates the agreed core files and folders, and can write fake or
+  explicitly approved project, issue, report, and release records.
+- **Duplicate protection:** setup and validation detect duplicate project,
+  issue, health-report, and release IDs regardless of filename. A changed or
+  malformed existing record stops setup with a conflict instead of being
+  silently reused.
+- **Saved-copy boundary:** a saved-copy value is only a caller-supplied
+  pointer. The adapter does not find, copy, read, or verify a Claude Project
+  backup.
 
-## Locally tested
+## Setup and validation commands
 
-- `npm test --prefix tools/troubleshooting-foundation`
-- `npm run dry-run --prefix tools/troubleshooting-foundation -- --out <empty-local-folder>`
-- `claude plugin validate .`
-- `claude --plugin-dir . -p '/debug-client-project' --tools '' --no-session-persistence --max-budget-usd 1.00`
-  loaded the local plugin and returned the required opening question.
+For local tests, use fake names and an output folder outside the repository:
 
-Repository-provided checks were also inspected and run. The existing sync-tool
-package has no `test` script: `npm test --prefix tools/claude-project-sync`
-returned `Missing script: "test"`. Its JavaScript files were syntax-checked
-instead with `node --check`.
+```text
+npm run setup --prefix tools/troubleshooting-folder -- \
+  --mode fake \
+  --out /absolute/path/to/Client\ Project\ Control\ Center \
+  --client "Fictional Harbor Co" \
+  --project-id PROJECT-FAKE-001 \
+  --project-name "Fictional Margin Helper"
 
-The dry run creates ten files, each clearly labelled fictional local test data.
+npm run validate --prefix tools/troubleshooting-folder -- \
+  /absolute/path/to/Client\ Project\ Control\ Center
+```
+
+`--mode fake` labels generated records as fictional local test data. A future
+approved client-folder run must use `--mode approved`; that mode never labels
+the records as fictional and still does not prove Drive sync, permissions, or
+the contents of any saved copy.
+
+## Tests passed
+
+- `npm test --prefix tools/troubleshooting-foundation` — 11 Phase 1 tests.
+- `node --test tests/troubleshooting-folder.test.mjs` — Phase 2 setup,
+  validation, duplicate, conflict, path-safety, and label-boundary tests.
+- `claude plugin validate .` — passed with the repository's two existing
+  manifest warnings.
+- A temporary-folder smoke test created the exact expected layout, validated
+  it, and confirmed no repository files were written.
+
+The existing `tools/claude-project-sync` package still has no test script. No
+Drive, Basecamp, Claude Projects, email, or live client data was accessed.
 
 ## Unverified
 
-- Plugin discovery was proven once through Claude Code's temporary local plugin
-  loader. A normal installed-plugin session, a plugin update, and a restart
-  have not been tested.
-- Template use and record creation are not yet proven inside a real Claude Code
-  conversation.
-- The existing `tools/claude-project-sync` package has no `test` script, so no
-  repository-provided automated sync-tool test exists to run.
-- No Drive, Basecamp, Claude Projects, email, or live client data was accessed.
+Real Google Drive desktop sync, shared-folder permissions, and the final
+approved Drive location remain unverified. The adapter deliberately accepts a
+local path only; it does not connect to Drive or create a cloud folder.
 
-## What Prompt 2 may build next
+## Prompt 3 handoff
 
-Prompt 2 may add a safe local Drive-synced-folder adapter around these records,
-outside this repository's reusable-material boundary. Later phases may collect
-an approved saved-copy path and write it to the Project Register. They must
-preserve required fields, the checkable-`passed` rule, the fictional-fixture
-label, and the repository-write guard. They must not create a Drive folder or
-put client-specific material in this repository.
+Prompt 3 should build the guided investigation against this folder contract
+and saved-copy fixtures. It may read approved saved-copy fixtures and write
+linked investigation records into the Control Center. It must not implement
+Basecamp, a live Claude pull, or cloud scheduling in that step.

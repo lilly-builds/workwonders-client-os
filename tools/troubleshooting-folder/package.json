@@ -1,0 +1,1 @@
+{"name":"workwonders-troubleshooting-folder","private":true,"type":"module","scripts":{"setup":"node src/setup.mjs","validate":"node src/validate.mjs"}}

@@ -1,0 +1,1 @@
+{"name":"workwonders-debug-client-project","private":true,"type":"module","scripts":{"debug":"node src/cli.mjs"}}

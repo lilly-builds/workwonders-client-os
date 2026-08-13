@@ -11,7 +11,7 @@ export const CORE_FILES = [
   '04 Test Library.md',
 ];
 export const CORE_DIRECTORIES = ['reports', 'issues', 'releases', 'project-backups'];
-const ID_FIELDS = { 'Project Register': 'project_id', 'Issue & Fix Log': 'issue_id', 'Health Report': 'report_id', 'Release Record': 'release_id' };
+const ID_FIELDS = { 'Project Register': 'project_id', 'Issue & Fix Log': 'issue_id', 'Health Report': 'report_id', 'Troubleshooting Card': 'card_id', 'Data Integrity Report': 'report_id', 'Developer Ticket': 'ticket_id', 'Release Record': 'release_id' };
 
 const safePart = (value, label) => {
   if (typeof value !== 'string' || !value.trim() || value.includes('/') || value.includes('\\') || value === '.' || value === '..' || /[\0\r\n]/.test(value)) {
@@ -102,8 +102,12 @@ async function inspectRecords(root) {
     }
   };
   await add(path.join(root, '01 Project Register.md'), 'Project Register').catch((error) => { if (error.code !== 'ENOENT') throw error; });
-  for (const [type, directory] of [['Issue & Fix Log', 'issues'], ['Health Report', 'reports'], ['Release Record', 'releases']]) {
-    for (const file of await filesUnder(path.join(root, directory))) await add(file, type);
+  for (const [directory, fallbackType] of [['issues', 'Issue & Fix Log'], ['reports', 'Health Report'], ['releases', 'Release Record']]) {
+    for (const file of await filesUnder(path.join(root, directory))) {
+      const text = await readFile(file, 'utf8');
+      const actualType = text.match(/^record_type:\s*(.+)$/m)?.[1]?.trim() || fallbackType;
+      await add(file, actualType);
+    }
   }
   const seen = new Map();
   for (const record of records) {
@@ -222,4 +226,55 @@ export async function setupControlCenter({ outputDir, clientName, project, issue
     results.push(existing ? { file: existing.file, created: false } : await writeOnce(target, content));
   }
   return { root, results, created: results.filter((item) => item.created).map((item) => item.file), reused: results.filter((item) => !item.created).map((item) => item.file) };
+}
+
+export async function writeInvestigationRecords({ outputDir, project, issue, card, healthReport, dataReport, developerTicket, mode = 'fake', repoRoot }) {
+  if (!issue?.issueId || !card?.cardId) throw new Error('An investigation needs one issue ID and one Troubleshooting Card ID.');
+  const root = path.resolve(outputDir);
+  const validationErrors = await validateControlCenter(root, { repoRoot });
+  if (validationErrors.length) throw new Error(`Control Center conflict: ${validationErrors.join(' ')}`);
+  const projectRegister = await readFile(path.join(root, '01 Project Register.md'), 'utf8');
+  if (!projectRegister.includes(`project_id: ${project.id}`)) throw new Error(`Unknown project reference: ${project.id}.`);
+  const records = [];
+  const put = async (directory, date, title, type, id, fields, body) => {
+    const target = path.join(root, directory, datedName(date, `${id} ${title}`, ''));
+    const content = `${frontMatter({ record_type: type, ...fields })}# ${title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nSaved-copy pointer: ${project.savedCopyLocation || 'not supplied'} (not copied or verified)\n\n${body}\n`;
+    const existing = await filesUnder(path.join(root, directory));
+    const matching = [];
+    for (const file of existing) {
+      const text = await readFile(file, 'utf8');
+      const parsed = parseFrontMatter(text);
+      if (parsed.record_type === type && parsed[ID_FIELDS[type]] === id) matching.push({ file, text });
+    }
+    if (matching.length > 1) throw new Error(`Duplicate ${type} ID: ${id}.`);
+    if (matching.length && matching[0].text !== content) throw new Error(`Control Center conflict: existing ${type} ${id} differs.`);
+    records.push(matching.length ? { file: matching[0].file, created: false } : await writeOnce(target, content));
+  };
+  await put('issues', issue.date, issue.title, 'Issue & Fix Log', issue.issueId, {
+    issue_id: issue.issueId, symptoms: issue.symptoms, proven_root_cause: issue.provenRootCause, solution: issue.solution,
+    permanent_check: issue.permanentCheck, resolution_date: issue.resolutionDate || 'not resolved', evidence_reference: issue.evidenceReference,
+    impact: issue.impact, owner: issue.owner, status: issue.status, project_id: project.id,
+  }, `Reports: ${issue.reportLinks || 'None'}\nTroubleshooting Card: ${card.cardId}\n`);
+  await put('issues', card.date, card.title, 'Troubleshooting Card', card.cardId, {
+    card_id: card.cardId, question: card.question, current_answer: card.currentAnswer, likely_causes: card.likelyCauses,
+    tests_attempted: card.testsAttempted, results: card.results, ruled_out_causes: card.ruledOutCauses, remaining_theories: card.remainingTheories,
+    check_method: card.checkMethod || 'not run', evidence_reference: card.evidenceReference, status: card.status, checked_by: card.checkedBy || 'not yet checked',
+    checked_on: card.checkedOn || 'not yet checked', next_owner: card.nextOwner, next_action: card.nextAction, project_id: project.id,
+  }, `Issue: ${issue.issueId}\n${card.detail || ''}`);
+  if (healthReport) await put('reports', healthReport.date, healthReport.title, 'Health Report', healthReport.reportId, {
+    report_id: healthReport.reportId, report_date: healthReport.date, scope: healthReport.scope, overall_status: healthReport.overallStatus,
+    known: healthReport.known, unknown: healthReport.unknown, next_owner: healthReport.nextOwner, next_action: healthReport.nextAction, project_id: project.id,
+  }, `Troubleshooting Card: ${card.cardId}`);
+  if (dataReport) await put('reports', dataReport.date, dataReport.title, 'Data Integrity Report', dataReport.reportId, {
+    report_id: dataReport.reportId, data_area: dataReport.dataArea, check_method: dataReport.checkMethod, finding: dataReport.finding,
+    evidence_reference: dataReport.evidenceReference, status: dataReport.status, checked_by: dataReport.checkedBy || 'not yet checked', checked_on: dataReport.checkedOn || 'not yet checked',
+    owner: dataReport.owner, next_action: dataReport.nextAction, project_id: project.id,
+  }, `Issue: ${issue.issueId}\nPlain-language impact: ${dataReport.impact}\nExact correction: ${dataReport.correction}\nRecheck: ${dataReport.recheck}`);
+  if (developerTicket) await put('issues', developerTicket.date, developerTicket.title, 'Developer Ticket', developerTicket.ticketId, {
+    ticket_id: developerTicket.ticketId, problem: developerTicket.problem, expected_behavior: developerTicket.expectedBehavior, proposed_change: developerTicket.proposedChange,
+    acceptance_check: developerTicket.acceptanceCheck, owner: developerTicket.owner, priority: developerTicket.priority, project_id: project.id,
+  }, `Issue: ${issue.issueId}\nAttempted tests: ${developerTicket.attemptedTests}\nEvidence: ${developerTicket.evidence}\nRuled-out causes: ${developerTicket.ruledOutCauses}\nRemaining theories: ${developerTicket.remainingTheories}`);
+  const finalErrors = await validateControlCenter(root, { repoRoot });
+  if (finalErrors.length) throw new Error(`Generated records failed canonical validation: ${finalErrors.join(' ')}`);
+  return { root, records, created: records.filter((r) => r.created).map((r) => r.file), reused: records.filter((r) => !r.created).map((r) => r.file) };
 }

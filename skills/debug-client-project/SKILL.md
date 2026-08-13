@@ -5,9 +5,11 @@ description: Start a safe, plain-language troubleshooting check for a Claude cli
 
 # Debug a client project
 
-Use this command to start a careful troubleshooting conversation. This is the
-foundation only: it does not open a client system, create a client record,
-read exports, use screenshots, access credentials, or use a browser profile.
+Use this skill to describe a careful troubleshooting conversation. **Phase 3
+conversation wiring is not implemented yet.** The separately tested local CLI
+runner reads only an approved fake saved-copy fixture and writes investigation
+records to a temporary Control Center. It never opens a live client system,
+asks for credentials, or performs a live update.
 
 ## How to speak
 
@@ -28,7 +30,8 @@ Start with:
 > not know, who owns the next step, and what happens next. This first step uses
 > blank reusable records only; it will not connect to a client system.
 
-Then ask only this first question:
+When this skill is connected to a supported interactive command, ask only this
+first question:
 
 > What is the one thing you expected this project to do, and what happened
 > instead?
@@ -38,10 +41,34 @@ that is necessary to clarify the problem. Use the templates in
 `templates/troubleshooting/` as the blank record shapes and
 `rules/troubleshooting-shared-rules.md` for safety lessons.
 
-The current foundation gets context only from the person's plain-language
-description. It does not retrieve, verify, save, or update client context.
-Later phases may collect an approved saved-copy path and write it to the
-Project Register. This foundation does not open, read, or write client records.
+The Phase 3 CLI runner accepts all answers as command-line options supplied by
+the caller; it is not currently connected to this conversation text. It
+reads a sanitized fake JSON copy, checks likely causes in order, records
+evidence, and writes one Issue & Fix Log record, one Troubleshooting Card, and
+a linked Health Report. A proven data cause also writes a named-owner Data
+Integrity Report; an unresolved case writes a Developer Ticket. The pointer is
+never treated as proof that a backup was found, copied, or verified.
+
+Example invocation:
+
+```text
+npm run debug --prefix tools/debug-client-project -- --mode fake \
+  --control-center /tmp/Client-Control-Center \
+  --saved-copy tests/fixtures/saved-projects/client-complaint-rule.json \
+  --client "Fictional Harbor Co" --project-id PROJECT-FAKE-001 \
+  --project-name "Fictional Margin Helper" --issue-id ISSUE-FAKE-100 \
+  --complaint "The expected margin answer is different from the result."
+```
+
+Any proposed reusable check is only prepared in the record. A live change
+still needs a preview and a direct yes/no approval from Lilly, and this phase
+never performs it.
+
+Do not claim the complete conversational user path is implemented until an
+actual Claude Code invocation proves that it starts, asks these questions in
+order, receives the answers, runs the investigation, writes the records, and
+shows the plain-language summary. The Phase 4/5 handoff is documented in
+`docs/DEBUG-CLIENT-PROJECT-PHASE3.md`.
 
 The templates are reference material for the future workflow. Their use and
 record creation have not yet been proven inside a real Claude Code conversation.

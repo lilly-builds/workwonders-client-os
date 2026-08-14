@@ -109,3 +109,10 @@ Both are in `.gitignore` as a second line of defence.
 If a command needs to write something new, add it here first, then change every
 command that writes a project folder. Two commands producing two shapes is how
 a diff starts reporting differences that are not real.
+
+## Controlled client updates
+
+`/update-client-project` is the only approved update entry point. It wraps the
+sync tool's transport operations and adds the preview, exact-ID, approval,
+candidate, behavior, promotion, and release checks. `/update-claude-project`
+is kept only as a redirect for old callers; it is not a second writer.

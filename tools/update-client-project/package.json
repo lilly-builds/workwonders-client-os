@@ -1,0 +1,1 @@
+{"name":"update-client-project","private":true,"type":"module","scripts":{"test":"node --test ../../tests/update-client-project.test.mjs"}}

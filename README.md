@@ -15,8 +15,9 @@ change it, push it back, and prove the live project matches what you meant.
 
 | Folder | What it holds |
 | --- | --- |
-| `skills/` | `backup-claude-projects` and `update-claude-project`, for people who don't use a terminal |
+| `skills/` | `backup-claude-projects` and the controlled `/update-client-project` front door |
 | `tools/claude-project-sync/` | The pull / push / diff / clone commands |
+| `tools/update-client-project/` | The approval, candidate, behavior, promotion, and release checks behind the one update front door |
 | `templates/` | Reusable project skeletons with the client details blanked out |
 | `templates/troubleshooting/` | Blank records for the safe troubleshooting workflow |
 | `rules/` | Reusable safety lessons that apply to every troubleshooting run |
@@ -107,7 +108,17 @@ node src/diff.mjs --port 9223 --project <url-or-uuid> --dir exports/<name>
 This is the one that answers "is the live project actually running what I think
 it is." Exits non-zero when they differ, so it can gate another step.
 
-**Push changes back up**
+**Update a client project**
+
+Use `/update-client-project`, not a direct push. It requires an exact project
+ID, shows a preview, requires Lilly's approval, and records candidate/live proof.
+This phase only allows sanitized or mocked verification; it does not change a
+real client project.
+
+The sync tool's push command is an internal transport primitive for the front
+door, not a second client-update workflow.
+
+**Internal transport: push changes back up**
 
 ```bash
 node src/push.mjs --port 9223 --project <url-or-uuid> --dir exports/<name>

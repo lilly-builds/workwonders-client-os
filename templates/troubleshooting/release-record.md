@@ -20,3 +20,15 @@ allowed_statuses: [not checked, blocked, needs review, passed]
 - Approver: [required: person or role]
 - Release date: [required: YYYY-MM-DD]
 - Rollback action: [required: safe reversal or why no release occurred]
+
+## Controlled update proof
+
+- Candidate project ID and name:
+- Candidate source live project ID:
+- Candidate behavior evidence:
+- Lilly review decision and date:
+- Promotion plan (approved files only):
+- Live behavior evidence:
+- Account-level Skills: `not checked` unless separately proven
+- Permanent check (shared Client OS rule or client Test Library item):
+- Unverified dependencies:

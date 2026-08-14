@@ -13,12 +13,14 @@ The basic pilot is one approved non-client or test project with one Client Bug
 Board triage card, a local/manual trigger, no email, no live update, no cloud
 schedule, and read-only source access wherever possible. The pilot must pull
 the card, respond on the same card, and prove the stage change without creating
-a duplicate. Only the rows below are needed to start that pilot.
+a duplicate. The run must happen through the Claude environment, not a
+shell-only command. Only the rows below are needed to start that pilot.
 
 | Gate | Required confirmation | Owner | Status |
 |---|---|---|---|
 | Pilot scope | One approved non-client or test project, limits, dates, and owner | Lilly | **Missing** |
 | Saved-copy source | Read access to the approved saved copy and complete Test Library | Lilly | **Missing** |
+| Claude environment | Installed Client OS command, conversational entry point, and visible approval pauses | Lilly | **Missing** |
 | Drive records | Exact folder and the smallest approved write scope for pilot records | Lilly | **Missing** |
 | Bug Board | Read access plus permission to respond to and change stage on one approved pilot card; no Update Board access needed | Lilly | **Missing** |
 | Fresh review | Reviewer who inspected the reachable path | Fresh reviewer | **Pending** |

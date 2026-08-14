@@ -40,12 +40,21 @@ missing, any enabled step is untested, or any failure is hidden as a pass.
 Complete `PROTECTED-PILOT-CONFIGURATION-CHECKLIST.md` before changing any
 external system. Blank or incomplete authorization means **blocked**.
 
+## Execution environment requirement
+
+The pilot must run inside the Claude environment through the installed Client
+OS command and its conversational entry point. A shell command, direct module
+call, or local fixture run is useful regression evidence only; it cannot prove
+the production-like pilot path. The operator must be able to watch the Claude
+conversation, see each proposed action, and approve each gate before it reads,
+writes, responds, or changes a stage.
+
 ## Smallest safe pilot
 
 The recommended first pilot is deliberately smaller than the full system:
 
 - one approved non-client or test project;
-- a local/manual trigger only;
+- a manual trigger from the Claude environment only;
 - a saved-copy read path and the smallest required Drive/board write path for
   the records being proven;
 - one Client Bug Board triage slice: pull one approved card, respond to it,
@@ -61,7 +70,8 @@ email, and live updates are separate approvals after this pilot passes.
 
 ## Intended reachable path
 
-1. Approved trigger: a named pilot issue or an approved scheduled run.
+1. Approved trigger: a named pilot issue entered in the Claude environment;
+   scheduled triggers are excluded from the smallest pilot.
 2. The Client Bug Board card is pulled and its client/project identity is
    checked before reading or writing.
 3. `/check-client-project` or `/debug-client-project` runs against the approved
@@ -92,7 +102,8 @@ email, and live updates are separate approvals after this pilot passes.
 - Pull one approved card from the Client Bug Board through the approved
   Basecamp path.
 - Confirm the card has the required fields and starts in the expected stage.
-- Trigger the run from that card through the approved entry point.
+- Trigger the run from that card through the Claude environment's approved
+  entry point.
 - Verify client/project identity before processing the saved copy.
 - Run every Test Library item; do not sample.
 - Confirm one Health Report, one response on the same Bug Board card, the
@@ -158,8 +169,9 @@ For the smallest safe pilot, save this exact evidence outside the repository:
 5. Failure and recovery evidence, including duplicate-protection results.
 6. The fetched Bug Board card ID, original stage, response, final stage, and
    link to the Drive record.
-7. Lilly's reviewer sign-off and Jim's plain-language usability readout.
-8. A plain list of every connector, control, and behavior not tested.
+7. Claude session evidence showing each pause, proposed action, and approval.
+8. Lilly's reviewer sign-off and Jim's plain-language usability readout.
+9. A plain list of every connector, control, and behavior not tested.
 
 Add these only when the corresponding optional path is approved: scheduled-run
 ID and monitoring evidence; alert evidence; candidate/live identity and

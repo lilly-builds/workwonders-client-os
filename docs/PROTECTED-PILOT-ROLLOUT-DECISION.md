@@ -18,6 +18,7 @@ system cannot work.
 |---|---|---|
 | Reusable Client OS materials | locally verified | Prior phase tests pass in the dedicated pilot worktree |
 | Local checker, investigation, and update guards | locally verified | 50 tests pass, including positive and negative controls |
+| Claude environment entry path | implemented, not fully tested | Conversational wiring has not yet proven the real Claude-session path |
 | Drive folder | blocked | No written folder/access confirmation |
 | Basecamp Bug Board | blocked | No written project/card access confirmation |
 | Basecamp Update Board | blocked | No written project/card access confirmation |
@@ -47,19 +48,20 @@ Lilly should complete and sign
 `PROTECTED-PILOT-CONFIGURATION-CHECKLIST.md` for one approved non-client or
 test project. The first approval should cover only the saved-copy read path,
 the smallest Drive record write path, and one Client Bug Board card that can
-be pulled, responded to, and moved through its bug stage using a local/manual
-trigger. No Update Board access is needed. It should explicitly keep email,
+be pulled, responded to, and moved through its bug stage using a manual
+trigger inside the Claude environment. No Update Board access is needed. It
+should explicitly keep email,
 live updates, cloud scheduling, and cloud alerts off. After that, run the
 manual pilot and save the exact evidence list in the runbook before considering
 any optional path.
 
 ## Fresh-context and no-drifting review
 
-The reachable local path is: checker or investigation command → explicit
-project context → local records → local board contract → next action. The
-external Drive, Basecamp, scheduler, alert, email, and Claude Project layers
-are not mounted or authenticated. Therefore the real end-to-end path is not
-proven, and this phase cannot be marked production verified.
+The reachable local path is: Claude environment entry point → explicit project
+context → records → Basecamp triage response → next action. The actual Claude
+conversation wiring and the external Drive/Basecamp layers are not yet
+authenticated or proven. Therefore the real end-to-end path is not proven, and
+this phase cannot be marked production verified.
 
 ## Learning record
 

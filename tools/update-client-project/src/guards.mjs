@@ -57,6 +57,10 @@ export const compareFileLists = (actual, expected, label) => {
   if (JSON.stringify(a) !== JSON.stringify(e)) fail(`${label} file list does not match the approved baseline.`);
 };
 
+export const assertProposedFileListComplete = (proposed, live) => {
+  compareFileLists(proposed, live, 'Proposed project');
+};
+
 export const assertCandidateLink = (candidate, liveId) => {
   assertStagingTitle(candidate.name);
   if (candidate.source_live_project_id !== liveId) fail('Candidate is not linked to the exact live project.');
@@ -86,6 +90,8 @@ export const assertBehaviorResult = (result, stage) => {
   if (result.status === 'failed') fail(`${stage} behavior tests failed.`);
   if (result.status !== 'passed') fail(`${stage} behavior tests have no passing result.`);
   if (result.open_question_reviewed !== true) fail(`${stage} requires human review of "${OPEN_REVIEW_QUESTION}".`);
+  if (result.open_question_concern) fail(`${stage} open-question review found an unresolved concern.`);
+  if (!result.evidence_location) fail(`${stage} behavior evidence location is required.`);
 };
 
 export const assertFreshComparison = (comparison, stage) => {

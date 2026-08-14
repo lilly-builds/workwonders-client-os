@@ -1,7 +1,7 @@
 ---
 record_type: Release Record
 required_fields: [release_id, target_project_id, change_summary, approved_file_list, included_records, verification_status, check_method, checked_by, checked_on, evidence_reference, post_update_comparison_result, client_email_required, approver, release_date, rollback_action]
-allowed_statuses: [not checked, blocked, needs review, passed]
+allowed_statuses: [not checked, blocked, needs review, passed, failed verification]
 ---
 # Release Record
 
@@ -25,10 +25,15 @@ allowed_statuses: [not checked, blocked, needs review, passed]
 
 - Candidate project ID and name:
 - Candidate source live project ID:
+- Candidate owner:
+- Staging expiry and cleanup rule:
 - Candidate behavior evidence:
 - Lilly review decision and date:
 - Promotion plan (approved files only):
 - Live behavior evidence:
+- Rollback attempted:
+- Rollback succeeded:
+- Rollback failure alert:
 - Account-level Skills: `not checked` unless separately proven
 - Permanent check (shared Client OS rule or client Test Library item):
 - Unverified dependencies:

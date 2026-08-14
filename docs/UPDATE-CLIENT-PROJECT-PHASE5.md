@@ -31,7 +31,9 @@ promotion, and release proof live in one orchestration layer.
 The candidate is cloned from the saved live baseline and must be titled exactly
 `STAGING — [live project title]`. `STAGING` is first and all caps. The record
 stores the source live project ID, candidate ID/name, owner (Lilly), and an
-expiry/cleanup decision after promotion. Candidate files and sources must match
+expiry/cleanup decision after promotion. If live verification fails, the
+saved live version is restored and the record says whether that rollback
+succeeded. Candidate files and sources must match
 the production baseline before the proposed change. Account-level Skills cannot
 be copied or claimed unless they are separately compared and tested.
 
@@ -44,7 +46,8 @@ stops the flow.
 
 The packet contains: change summary, target map, exact approved files, candidate
 behavior evidence, Lilly's review decision, promotion plan, rollback action,
-and live proof. The detailed packet and Release Record live in the client's
+live proof, candidate owner, staging expiry/cleanup rule, and permanent check.
+The detailed packet and Release Record live in the client's
 Drive. The Client Update Board card links to them:
 
 https://app.basecamp.com/5730006/buckets/48267142/card_tables/10197329775

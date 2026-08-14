@@ -10,6 +10,7 @@
 | Approval | Lilly approval required before candidate/live writes | unit tested |
 | Behavior | original + five safety questions + open review | unit tested; live unverified |
 | Promotion | approved files only | mocked integration tested |
+| Live failure recovery | saved version restore + rollback result in Release Record | mocked integration tested |
 | Release evidence | packet → Release Record → Update Board link | schema/docs tested; real board unverified |
 | Account Skills | explicit blocker when required | unit tested; not checked live |
 

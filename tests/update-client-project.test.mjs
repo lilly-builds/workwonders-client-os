@@ -26,7 +26,7 @@ test('no approval means no write', async () => {
 });
 
 test('wrong ID, duplicate file, unexpected file, and staging guard stop', () => {
-  assert.throws(() => previewUpdate({ live, proposed: { ...proposed, docs: [...proposed.docs, { file_name: 'extra.md' }] } }), /Unexpected file/);
+  assert.throws(() => previewUpdate({ live, proposed: { ...proposed, docs: [...proposed.docs, { file_name: 'extra.md' }] } }), /file list/);
   assert.throws(() => assertNoDuplicateFiles({ instructions: 'x', docs: [{ file_name: 'a' }, { file_name: 'a' }] }), /duplicate/);
   assert.throws(() => assertStagingTitle('Owner Intelligence'), /must start/);
   assert.throws(() => assertCandidateLink({ uuid: 'candidate', name: 'STAGING — Owner Intelligence', source_live_project_id: 'wrong' }, live.uuid), /not linked/);
@@ -43,10 +43,19 @@ test('behavior pass and failure, including open-question review', () => {
   assert.equal(evaluateBehavior(contract, responses).status, 'passed');
   assert.equal(evaluateBehavior(contract, { ...responses, 'Does it use the cost code correctly?': { result: 'wrong' } }).status, 'failed');
   assert.equal(evaluateBehavior(contract, { ...responses, [contract.open_question]: { reviewed: false } }).open_question_reviewed, false);
+  assert.equal(evaluateBehavior({ ...contract, expected_results: { ...contract.expected_results, 'Does it use the cost code correctly?': undefined } }, responses).status, 'failed');
+  assert.equal(evaluateBehavior(contract, { ...responses, [contract.open_question]: { reviewed: true, concern: 'A concern' } }).status, 'failed');
+});
+
+test('behavior contract requires expected answers and evidence location', () => {
+  assert.throws(() => behaviorContract({ originalProblemQuestion: 'Q', expectedResults: {}, allowedTestData: 'fixture', evidenceLocation: 'evidence' }), /Expected answers/);
+  const expected = Object.fromEntries(['Q', ...contract.safety_questions].map((q) => [q, 'pass']));
+  assert.throws(() => behaviorContract({ originalProblemQuestion: 'Q', expectedResults: expected, allowedTestData: 'fixture' }), /evidence location/);
 });
 
 test('promotion packet completeness is enforced', () => {
   assert.throws(() => assertPacketComplete({}), /incomplete/);
+  assert.throws(() => assertPacketComplete({ change_summary: 'x', target_map: { live_project_id: 'l', candidate_project_id: 'c', live_project_name: 'Live', candidate_project_name: 'Stage' }, approved_files: ['rules.md'], candidate_behavior_evidence: { status: 'passed', evidence_location: 'candidate-evidence' }, lilly_review: { reviewer: 'Lilly', decision: 'approved', reviewed_at: 'today' }, promotion_plan: { only_approved_files: true, files: ['rules.md'] }, rollback_action: 'restore', live_proof: { status: 'not-run' }, candidate_owner: 'Lilly', staging_cleanup: { expiry: 'tomorrow', rule: 'archive' }, permanent_check: {} }), /permanent check/);
 });
 
 test('account-level Skill gap is a blocker', () => {
@@ -73,10 +82,49 @@ test('candidate approval promotes only approved files and records release', asyn
     compareFresh: async () => ({ fresh: true, matches: true }),
     saveReleaseRecord: async (r) => { record = r; },
   };
-  const result = await runControlledUpdate({ request: { live_project_id: live.uuid, proposed, write: true, named_target: 'Owner Intelligence', approval: { reviewer: 'Lilly', decision: 'approved' }, lilly_review: { reviewer: 'Lilly', decision: 'approved' }, change_summary: 'fix', rollback_action: 'restore saved copy', permanent_check: 'client test library', candidate_skills_checked: true, live_skills_checked: true }, transport, behaviorRunner: async () => ({ status: 'passed', open_question_reviewed: true }) });
+  const result = await runControlledUpdate({ request: { live_project_id: live.uuid, proposed, write: true, named_target: 'Owner Intelligence', approval: { reviewer: 'Lilly', decision: 'approved' }, lilly_review: { reviewer: 'Lilly', decision: 'approved', reviewed_at: 'today' }, change_summary: 'fix', rollback_action: 'restore saved copy', permanent_check: { type: 'client Test Library', reference: 'TEST-1' }, candidate_owner: 'Lilly', staging_expiry: 'after promotion', staging_cleanup_rule: 'archive or remove after review', candidate_skills_checked: true, live_skills_checked: true }, transport, behaviorRunner: async () => ({ status: 'passed', open_question_reviewed: true, evidence_location: 'fixture-evidence' }) });
   assert.equal(result.status, 'verified');
   assert.deepEqual(writes.map((w) => w.id), ['candidate-1', 'live-1']);
   assert.equal(record.status, 'verified');
+});
+
+test('missing existing file is rejected before any write', () => {
+  assert.throws(() => previewUpdate({ live, proposed: { ...proposed, docs: [] } }), /file list/);
+});
+
+test('live behavior failure restores the saved version and records failure', async () => {
+  const writes = [];
+  let saved;
+  let restored = false;
+  const candidate = { uuid: 'candidate-2', name: 'STAGING — Owner Intelligence', source_live_project_id: live.uuid, instructions: 'old', docs: [{ file_name: 'rules.md', content: 'old' }] };
+  const transport = {
+    canClone: true,
+    readProject: async (id) => id === live.uuid ? live : candidate,
+    cloneProject: async () => candidate,
+    writeApproved: async (id) => writes.push(id),
+    restoreProject: async () => { restored = true; },
+    compareFresh: async (_id, expected) => ({ fresh: true, matches: true }),
+    saveReleaseRecord: async (record) => { saved = record; },
+  };
+  await assert.rejects(() => runControlledUpdate({ request: { live_project_id: live.uuid, proposed, write: true, named_target: 'Owner Intelligence', approval: { reviewer: 'Lilly', decision: 'approved' }, lilly_review: { reviewer: 'Lilly', decision: 'approved', reviewed_at: 'today' }, change_summary: 'fix', rollback_action: 'restore saved copy', permanent_check: { type: 'shared Client OS rule', reference: 'RULE-1' }, candidate_owner: 'Lilly', staging_expiry: 'after promotion', staging_cleanup_rule: 'archive', candidate_skills_checked: true, live_skills_checked: true }, transport, behaviorRunner: async (_project, stage) => stage === 'candidate' ? { status: 'passed', open_question_reviewed: true, evidence_location: 'candidate-evidence' } : { status: 'failed', evidence_location: 'live-evidence' } }), /Live verification failed/);
+  assert.deepEqual(writes, ['candidate-2', 'live-1']);
+  assert.equal(restored, true);
+  assert.equal(saved.status, 'failed verification');
+  assert.equal(saved.update_packet.live_proof.rollback.succeeded, true);
+});
+
+test('rollback failure is recorded and clearly reported', async () => {
+  const candidate = { uuid: 'candidate-3', name: 'STAGING — Owner Intelligence', source_live_project_id: live.uuid, instructions: 'old', docs: [{ file_name: 'rules.md', content: 'old' }] };
+  const transport = {
+    canClone: true,
+    readProject: async (id) => id === live.uuid ? live : candidate,
+    cloneProject: async () => candidate,
+    writeApproved: async () => {},
+    restoreProject: async () => { throw new Error('restore unavailable'); },
+    compareFresh: async () => ({ fresh: true, matches: true }),
+    saveReleaseRecord: async () => {},
+  };
+  await assert.rejects(() => runControlledUpdate({ request: { live_project_id: live.uuid, proposed, write: true, named_target: 'Owner Intelligence', approval: { reviewer: 'Lilly', decision: 'approved' }, lilly_review: { reviewer: 'Lilly', decision: 'approved', reviewed_at: 'today' }, change_summary: 'fix', rollback_action: 'restore saved copy', permanent_check: { type: 'client Test Library', reference: 'TEST-2' }, candidate_owner: 'Lilly', staging_expiry: 'after promotion', staging_cleanup_rule: 'archive', candidate_skills_checked: true, live_skills_checked: true }, transport, behaviorRunner: async (_project, stage) => stage === 'candidate' ? { status: 'passed', open_question_reviewed: true, evidence_location: 'candidate-evidence' } : { status: 'failed', evidence_location: 'live-evidence' } }), /Rollback also failed/);
 });
 
 test('front door exists once and old name is redirect-only', async () => {

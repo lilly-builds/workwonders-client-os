@@ -48,6 +48,8 @@ The recommended first pilot is deliberately smaller than the full system:
 - a local/manual trigger only;
 - a saved-copy read path and the smallest required Drive/board write path for
   the records being proven;
+- one Client Bug Board triage slice: pull one approved card, respond to it,
+  and move it through the appropriate bug stage;
 - no Microsoft email;
 - no live update or candidate promotion;
 - no cloud schedule or cloud alerting;
@@ -60,11 +62,13 @@ email, and live updates are separate approvals after this pilot passes.
 ## Intended reachable path
 
 1. Approved trigger: a named pilot issue or an approved scheduled run.
-2. Correct client and project identity are checked before reading or writing.
+2. The Client Bug Board card is pulled and its client/project identity is
+   checked before reading or writing.
 3. `/check-client-project` or `/debug-client-project` runs against the approved
    saved copy and complete Test Library.
 4. A Health Report is written for a pass; a failure starts one deep check.
-5. The related Bug Board card reaches the correct stage and links to Drive.
+5. The same Bug Board card receives the response, owner, next action, evidence
+   link, and correct stage. It is never duplicated.
 6. A next owner and next action are recorded.
 7. An approved update, if in scope, follows candidate testing, Lilly review,
    exact-live promotion, fresh comparison, live retest, and Release Record.
@@ -85,16 +89,21 @@ email, and live updates are separate approvals after this pilot passes.
 
 ### B. Safe positive control
 
-- Trigger the run through the approved entry point.
-- Verify client/project identity before processing.
+- Pull one approved card from the Client Bug Board through the approved
+  Basecamp path.
+- Confirm the card has the required fields and starts in the expected stage.
+- Trigger the run from that card through the approved entry point.
+- Verify client/project identity before processing the saved copy.
 - Run every Test Library item; do not sample.
-- Confirm one Health Report, one valid board action, and no duplicate records.
+- Confirm one Health Report, one response on the same Bug Board card, the
+  correct stage transition, and no duplicate records.
 - Record evidence references outside the repository.
 
 ### C. Safe negative control
 
-- Use an unknown project or malformed saved copy in the approved test area.
-- Confirm the run rejects it before a client or board write.
+- Use an unknown project, malformed saved copy, or malformed Bug Board card in
+  the approved test area.
+- Confirm the run rejects it before a Drive or Basecamp write.
 - Confirm a failed check remains failed or needs review and starts one deep check.
 
 ### D. Recovery control
@@ -102,7 +111,7 @@ email, and live updates are separate approvals after this pilot passes.
 - Stop or time out a run after a visible partial result.
 - Restart it using the same run ID.
 - Confirm partial work remains visible, the run resumes or safely re-runs, and
-  no investigation, board action, report, or alert is duplicated.
+  no investigation, Bug Board response, report, or alert is duplicated.
 
 ### E. Regression and realistic sample controls
 
@@ -147,8 +156,10 @@ For the smallest safe pilot, save this exact evidence outside the repository:
 3. The Health Report.
 4. The Bug Board card, stage, and link to the Drive record.
 5. Failure and recovery evidence, including duplicate-protection results.
-6. Lilly's reviewer sign-off and Jim's plain-language usability readout.
-7. A plain list of every connector, control, and behavior not tested.
+6. The fetched Bug Board card ID, original stage, response, final stage, and
+   link to the Drive record.
+7. Lilly's reviewer sign-off and Jim's plain-language usability readout.
+8. A plain list of every connector, control, and behavior not tested.
 
 Add these only when the corresponding optional path is approved: scheduled-run
 ID and monitoring evidence; alert evidence; candidate/live identity and

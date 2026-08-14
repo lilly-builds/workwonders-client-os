@@ -46,10 +46,12 @@ system cannot work.
 Lilly should complete and sign
 `PROTECTED-PILOT-CONFIGURATION-CHECKLIST.md` for one approved non-client or
 test project. The first approval should cover only the saved-copy read path,
-the smallest Drive record write path, one Bug Board card, and a local/manual
-trigger. It should explicitly keep email, live updates, cloud scheduling, and
-cloud alerts off. After that, run the manual pilot and save the exact evidence
-list in the runbook before considering any optional path.
+the smallest Drive record write path, and one Client Bug Board card that can
+be pulled, responded to, and moved through its bug stage using a local/manual
+trigger. No Update Board access is needed. It should explicitly keep email,
+live updates, cloud scheduling, and cloud alerts off. After that, run the
+manual pilot and save the exact evidence list in the runbook before considering
+any optional path.
 
 ## Fresh-context and no-drifting review
 

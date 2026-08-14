@@ -228,6 +228,21 @@ export async function setupControlCenter({ outputDir, clientName, project, issue
   return { root, results, created: results.filter((item) => item.created).map((item) => item.file), reused: results.filter((item) => !item.created).map((item) => item.file) };
 }
 
+export async function writeHealthReport({ outputDir, project, report, mode = 'fake', repoRoot }) {
+  if (!report?.reportId || !report?.title) throw new Error('A Health Report needs an ID and title.');
+  if (!['fake', 'approved'].includes(mode)) throw new Error('Report mode must be explicit: use fake or approved.');
+  await assertSafeOutputPath(outputDir, { repoRoot });
+  const root = path.resolve(outputDir);
+  const projectRegister = await readFile(path.join(root, '01 Project Register.md'), 'utf8');
+  if (!projectRegister.includes(`project_id: ${project.id}`)) throw new Error(`Unknown project reference: ${project.id}.`);
+  const target = path.join(root, 'reports', datedName(report.date, `${report.reportId} ${report.title}`, ' Health Report'));
+  const content = `${frontMatter({ record_type: 'Health Report', report_id: report.reportId, report_date: report.date, scope: report.scope, overall_status: report.overallStatus, known: report.known, unknown: report.unknown, next_owner: report.nextOwner, next_action: report.nextAction, check_method: report.checkMethod, evidence_reference: report.evidenceReference, checked_by: report.checkedBy, checked_on: report.checkedOn, project_id: project.id })}# ${report.title}\n\n${recordLabel(mode)}\nProject: [${project.name}](../01%20Project%20Register.md)\nSaved-copy pointer: ${project.savedCopyLocation || 'not supplied'} (not copied or verified)\n`;
+  const result = await writeOnce(target, content);
+  const errors = await validateControlCenter(root, { repoRoot });
+  if (errors.length) throw new Error(`Generated Health Report failed canonical validation: ${errors.join(' ')}`);
+  return { root, report, ...result };
+}
+
 export async function writeInvestigationRecords({ outputDir, project, issue, card, healthReport, dataReport, developerTicket, mode = 'fake', repoRoot }) {
   if (!issue?.issueId || !card?.cardId) throw new Error('An investigation needs one issue ID and one Troubleshooting Card ID.');
   const root = path.resolve(outputDir);

@@ -22,7 +22,7 @@ Required card fields: card ID, client, project ID, linked bug card when relevant
 
 - The exact board URL is checked before a card is accepted.
 - Required fields and stage names are checked before work starts.
-- A saved card ID is claimed once: one bug card can start one investigation, and one update card can start one release action.
+- A saved card ID is claimed once: one bug card can start one investigation, and one update card can start one release action. Claims use a directory lock so simultaneous local calls cannot both win. A future real adapter must provide equivalent atomic claiming.
 - Unknown board, malformed card, duplicate card, and conflicting card links fail clearly; they are not skipped.
-- Bug and update cards may link to each other, but remain separate records.
+- Bug and update cards may link to each other, but remain separate records. Update cards may queue a release action only from Proposed or Approved; Deployed, Verified, and Blocked cards fail clearly until an explicit new action exists.
 - `tools/basecamp-adapters/src/idempotency.mjs` is the storage contract: durable implementations must provide `claim(kind, cardId, action)` and return `duplicate: true` on a repeat.

@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { setupControlCenter } from '../../troubleshooting-folder/src/control-center.mjs';
+import { setupControlCenter, writeHealthReport } from '../../troubleshooting-folder/src/control-center.mjs';
 import { investigate } from '../../debug-client-project/src/investigate.mjs';
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -11,8 +11,9 @@ export async function loadTestLibrary(file) {
   const tests = Array.isArray(data) ? data : data.tests || data.test_library;
   if (!Array.isArray(tests) || !tests.length) throw new Error('The Test Library must contain at least one test.');
   for (const test of tests) {
-    for (const field of ['test_id', 'purpose', 'setup', 'steps', 'expected_result', 'check_method', 'owner']) if (!test[field]) throw new Error(`Test Library item is missing ${field}.`);
+    for (const field of ['test_id', 'purpose', 'setup', 'steps', 'expected_result', 'check_method', 'refresh_date', 'scope', 'owner']) if (!test[field]) throw new Error(`Test Library item is missing ${field}.`);
   }
+  for (const test of tests) if (!['shared', 'client-specific'].includes(test.scope)) throw new Error(`Test Library item ${test.test_id} has invalid scope: ${test.scope}.`);
   return tests;
 }
 
@@ -40,11 +41,8 @@ export async function runClientProjectCheck({ controlCenterDir, savedCopyPath, t
   await setupControlCenter({ outputDir: controlCenterDir, clientName, project, mode, repoRoot });
   const reportId = `HEALTH-${project.id}-${date}`;
   if (!failed.length) {
-    const { writeInvestigationRecords } = await import('../../troubleshooting-folder/src/control-center.mjs');
-    const result = await writeInvestigationRecords({ outputDir: controlCenterDir, project, mode, repoRoot,
-      issue: { issueId: `CHECK-${project.id}-${date}`, date, title: 'Health check record', symptoms: 'Routine saved-copy check', provenRootCause: 'None; all Test Library items passed.', solution: 'No change needed.', permanentCheck: 'The Test Library items used in this report.', evidenceReference: path.basename(savedCopyPath), impact: 'No problem found.', owner: operator, status: 'resolved', reportLinks: `reports/${reportId}` },
-      card: { cardId: `CHECK-CARD-${project.id}-${date}`, date, title: 'Health check summary', question: 'Does the saved project copy pass its Test Library?', currentAnswer: 'Yes; every required fixture test passed.', likelyCauses: 'None', testsAttempted: results.map((r) => r.testId).join('; '), results: results.map((r) => `${r.testId}: passed — ${clean(r.evidence)}`).join('\n'), ruledOutCauses: 'All listed failure causes.', remainingTheories: 'None.', evidenceReference: path.basename(savedCopyPath), status: 'passed', checkedBy: operator, checkedOn: date, nextOwner: operator, nextAction: 'Review the report; no extra work was opened.', checkMethod: 'Run every Test Library item against the saved-copy fixture.' },
-      healthReport: { reportId, date, title: `${clientName} ${project.name} Health Report`, scope: 'All active Test Library checks for this saved project copy', overallStatus: 'healthy', known: `${results.length} required checks passed.`, unknown: 'The live Claude Project, Basecamp, Drive, cloud runner, and email were not checked.', nextOwner: operator, nextAction: 'Review the short Health Report on the next workday.' } });
+    const healthReport = { reportId, date, title: `${clientName} ${project.name} Health Report`, scope: 'All active Test Library checks for this saved project copy', overallStatus: 'healthy', known: `${results.length} required checks passed.`, unknown: 'The live Claude Project, Basecamp, Drive, cloud runner, and email were not checked.', nextOwner: operator, nextAction: 'Review the short Health Report on the next workday.', checkMethod: 'Run every Test Library item against the saved-copy fixture.', evidenceReference: path.basename(savedCopyPath), checkedBy: operator, checkedOn: date };
+    const result = await writeHealthReport({ outputDir: controlCenterDir, project, report: healthReport, mode, repoRoot });
     return { status: 'healthy', results, failed, healthReport: result, deepCheck: null };
   }
   const first = failed[0];

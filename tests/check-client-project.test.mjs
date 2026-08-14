@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { mkdtemp, readdir, rm } from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import test from 'node:test';
+import { runClientProjectCheck } from '../tools/check-client-project/src/checker.mjs';
+const rootDir = path.resolve(new URL('..', import.meta.url).pathname);
+const fixture = (name) => path.join(rootDir, 'fixtures/basecamp', name);
+const base = { clientName: 'Fictional Harbor Co', project: { id: 'PROJECT-FAKE-001', name: 'Fictional Margin Helper', savedCopyLocation: 'fixture' }, testLibraryPath: fixture('test-library.json'), mode: 'fake' };
+test('passing saved copy writes one healthy Health Report', async () => { const out = await mkdtemp(path.join(os.tmpdir(), 'ww-check-')); try { const result = await runClientProjectCheck({ ...base, controlCenterDir: out, savedCopyPath: fixture('saved-copy-pass.json') }); assert.equal(result.status, 'healthy'); assert.equal(result.failed.length, 0); assert.equal((await readdir(path.join(out, 'reports'))).length, 1); } finally { await rm(out, { recursive: true, force: true }); } });
+test('failed saved copy automatically starts exactly one deep check', async () => { const out = await mkdtemp(path.join(os.tmpdir(), 'ww-check-')); try { const input = { ...base, controlCenterDir: out, savedCopyPath: fixture('saved-copy-fail.json') }; const first = await runClientProjectCheck(input); const second = await runClientProjectCheck(input); assert.equal(first.status, 'needs review'); assert.ok(first.deepCheck); assert.equal(first.deepCheck.plan.rootCause.category, 'project rule'); assert.equal(second.deepCheck.result.created.length, 0); assert.equal((await readdir(path.join(out, 'issues'))).filter((name) => name.includes('DEEP-PROJECT-FAKE-001')).length, 2); } finally { await rm(out, { recursive: true, force: true }); } });

@@ -90,13 +90,13 @@ the window it opens, and say which projects to include.
 The other command goes the other way:
 
 ```
-/update-claude-project
+/update-client-project
 ```
 
-Point it at a folder of project files and it will either update a project that
-already exists, or create a new one from it. Use it to apply a change, to undo
-one by restoring an older backup, or to copy a project into another Claude
-account.
+Point it at a folder of project files and it will show a controlled update
+preview for the exact named project. Lilly approval, candidate checks, behavior
+proof, and the release record are required before a live change. The old
+`/update-claude-project` name remains only as a redirect.
 
 It always shows you exactly what will change and waits for you to agree,
 before anything happens. It calls out any file that would be removed, since

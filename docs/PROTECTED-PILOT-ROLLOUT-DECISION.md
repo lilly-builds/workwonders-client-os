@@ -17,7 +17,7 @@ system cannot work.
 | Connection | Status | Evidence |
 |---|---|---|
 | Reusable Client OS materials | locally verified | Prior phase tests pass in the dedicated pilot worktree |
-| Local checker, investigation, and update guards | locally verified | 39 tests pass, including positive and negative controls |
+| Local checker, investigation, and update guards | locally verified | 50 tests pass, including positive and negative controls |
 | Drive folder | blocked | No written folder/access confirmation |
 | Basecamp Bug Board | blocked | No written project/card access confirmation |
 | Basecamp Update Board | blocked | No written project/card access confirmation |
@@ -44,11 +44,12 @@ system cannot work.
 ## Required next smallest action
 
 Lilly should complete and sign
-`PROTECTED-PILOT-CONFIGURATION-CHECKLIST.md` for one non-client or explicitly
-approved pilot project, including the exact Drive folder, board/card access,
-alert destination, and Claude Project decision. After that, run only the
-positive and negative controls in the runbook before considering any scheduled
-run or live update.
+`PROTECTED-PILOT-CONFIGURATION-CHECKLIST.md` for one approved non-client or
+test project. The first approval should cover only the saved-copy read path,
+the smallest Drive record write path, one Bug Board card, and a local/manual
+trigger. It should explicitly keep email, live updates, cloud scheduling, and
+cloud alerts off. After that, run the manual pilot and save the exact evidence
+list in the runbook before considering any optional path.
 
 ## Fresh-context and no-drifting review
 

@@ -40,6 +40,23 @@ missing, any enabled step is untested, or any failure is hidden as a pass.
 Complete `PROTECTED-PILOT-CONFIGURATION-CHECKLIST.md` before changing any
 external system. Blank or incomplete authorization means **blocked**.
 
+## Smallest safe pilot
+
+The recommended first pilot is deliberately smaller than the full system:
+
+- one approved non-client or test project;
+- a local/manual trigger only;
+- a saved-copy read path and the smallest required Drive/board write path for
+  the records being proven;
+- no Microsoft email;
+- no live update or candidate promotion;
+- no cloud schedule or cloud alerting;
+- read-only access to source material wherever the evidence can be collected
+  without a write.
+
+This pilot proves the basic troubleshooting and record path first. Scheduling,
+email, and live updates are separate approvals after this pilot passes.
+
 ## Intended reachable path
 
 1. Approved trigger: a named pilot issue or an approved scheduled run.
@@ -57,8 +74,9 @@ external system. Blank or incomplete authorization means **blocked**.
 
 ### A. Preflight
 
-- Record the pilot scope, project ID/name, approved folder, board card IDs,
-  alert destination, runner provider, and allowed email/project access.
+- Record the pilot scope, project ID/name, approved folder, and one Bug Board
+  card or approved card-creation scope. Record scheduling, email, and live
+  project details only when those optional paths are in scope.
 - Confirm the saved copy and Test Library are complete and belong to the same
   project.
 - Confirm the repository is clean and the prior phase test suite passes.
@@ -120,6 +138,23 @@ Only if the checklist authorizes it:
 - If the issue was client-reported, send the approved plain-language email only
   after internal verification. Otherwise keep it internal.
 
+## Exact pilot evidence to save
+
+For the smallest safe pilot, save this exact evidence outside the repository:
+
+1. Run ID and trigger time.
+2. Complete Test Library results, including any failed or rejected test.
+3. The Health Report.
+4. The Bug Board card, stage, and link to the Drive record.
+5. Failure and recovery evidence, including duplicate-protection results.
+6. Lilly's reviewer sign-off and Jim's plain-language usability readout.
+7. A plain list of every connector, control, and behavior not tested.
+
+Add these only when the corresponding optional path is approved: scheduled-run
+ID and monitoring evidence; alert evidence; candidate/live identity and
+behavior responses; Release Record; rollback result; and approved client email
+evidence.
+
 ## Evidence register
 
 | Evidence | Required proof | Result | Evidence reference |
@@ -130,11 +165,11 @@ Only if the checklist authorizes it:
 | Bug Board | Correct board/card/stage and link | Pending | Outside repository |
 | Check/deep check | Every test run; failure starts one deep check | Pending | Outside repository |
 | Next action | Named owner and action | Pending | Outside repository |
-| Release Record | Only for an approved update | Pending | Outside repository |
-| Monitoring | In-progress, failed, stale, complete | Pending | Outside repository |
-| Alert | Lilly receives the correct failure alert | Pending | Outside repository |
-| Scheduled run | Observed cloud-triggered run | Not authorized | N/A |
-| Client email | Only after internal verification and approval | Not authorized | N/A |
+| Release Record | Only for an approved live update | Not in smallest pilot | N/A |
+| Monitoring | In-progress, failed, stale, complete | Not in smallest pilot | N/A |
+| Alert | Lilly receives the correct failure alert | Not in smallest pilot | N/A |
+| Scheduled run | Observed cloud-triggered run | Not in smallest pilot | N/A |
+| Client email | Only after internal verification and approval | Not in smallest pilot | N/A |
 
 ## Final review
 

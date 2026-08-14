@@ -7,20 +7,33 @@ This is the only configuration intake for Prompt 6. Do not fill it with
 credentials. Record approval names, dates, scopes, and secret-location
 references only. Keep the actual secrets in the approved provider vault.
 
-## Required approvals
+## Required for the basic protected pilot
+
+The basic pilot is one approved non-client or test project with a local/manual
+trigger, no email, no live update, no cloud schedule, and read-only source
+access wherever possible. Only the rows below are needed to start that pilot.
 
 | Gate | Required confirmation | Owner | Status |
 |---|---|---|---|
-| Pilot scope | Pilot client or non-client project, limits, dates, and owner | Lilly | **Missing** |
-| Drive | Exact folder, read/write scope, sync status, and sharing check | Lilly | **Missing** |
-| Basecamp | Client Bug Board and Client Update Board access and approved card IDs | Lilly | **Missing** |
-| Cloud runner | Provider, account, secret reference, schedule/timezone, cost ceiling | Lilly | **Missing** |
-| Alerts | Lilly destination and failure/stale alert permission | Lilly | **Missing** |
-| Claude Project | Non-client or real-client permission, exact project ID/name, read/write scope | Lilly | **Missing** |
-| Microsoft email | Sender, recipient scope, approval for client-facing email | Lilly | **Missing / off** |
-| Candidate | Candidate creation permission and cleanup decision | Lilly | **Missing / off** |
+| Pilot scope | One approved non-client or test project, limits, dates, and owner | Lilly | **Missing** |
+| Saved-copy source | Read access to the approved saved copy and complete Test Library | Lilly | **Missing** |
+| Drive records | Exact folder and the smallest approved write scope for pilot records | Lilly | **Missing** |
+| Bug Board | Access to the Client Bug Board and one approved pilot card or card-creation scope | Lilly | **Missing** |
 | Fresh review | Reviewer who inspected the reachable path | Fresh reviewer | **Pending** |
 | Usability readout | Jim's plain-language readout | Jim | **Pending** |
+
+## Only required if optional paths are included
+
+Leave these off for the recommended first pilot. Approve each separately.
+
+| Optional path | Additional confirmation | Owner | Status |
+|---|---|---|---|
+| Cloud schedule | Provider, account, secret reference, Sunday schedule/timezone, cost ceiling, and disable action | Lilly | **Off** |
+| Cloud alerts | Lilly destination and failure/stale alert permission | Lilly | **Off** |
+| Live update | Exact live project access, candidate creation, candidate ID/name, and cleanup decision | Lilly | **Off** |
+| Update Board | Client Update Board access and approved update card | Lilly | **Off** |
+| Microsoft email | Sender, recipient scope, and approval for client-facing email | Lilly | **Off** |
+| Claude Project | Exact non-client or real-client project ID/name and approved read/write scope | Lilly | **Off** |
 
 ## External configuration record
 
@@ -28,6 +41,7 @@ Complete only after written approval exists.
 
 - Pilot scope:
 - Approved project ID/name:
+- Saved-copy location and read-only access confirmation:
 - Drive folder link or sanitized locator:
 - Bug Board card ID:
 - Update Board card ID, if applicable:
@@ -55,6 +69,7 @@ ________________________________________________________________________
 
 ## Stop conditions
 
-Stop before external configuration if any required row is Missing, if a
-credential is not in an approved vault, if the project identity is unclear, or
-if the proposed test would touch a client without explicit approval.
+Stop before external configuration if any row in the basic-pilot table is
+Missing, if a credential is not in an approved vault, if the project identity
+is unclear, or if the proposed test would touch a client without explicit
+approval. Optional rows may remain Off when the optional path is excluded.

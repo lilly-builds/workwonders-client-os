@@ -1,0 +1,8 @@
+{
+  "name": "workwonders-troubleshooting-operator",
+  "private": true,
+  "scripts": {
+    "operate": "node src/cli.mjs",
+    "test": "node --test ../../tests/troubleshooting-operator.test.mjs"
+  }
+}

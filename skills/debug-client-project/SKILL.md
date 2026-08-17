@@ -13,28 +13,47 @@ asks for credentials, or performs a live update.
 
 ## How to speak
 
-- Use plain language. Explain what is happening before asking for input.
-- Ask **one clear question at a time**. Wait for the answer before asking the
-  next question.
+- Start with **the next safe action you are taking**, not a list of missing
+  permissions or setup work.
+- Say what you found before asking for help. Ask **one clear question at a
+  time**, only when the next safe action is genuinely blocked.
+- Read the ticket body **and its comments**. A useful request in a comment is
+  still the request; do not claim the ticket is empty without reading both.
+- Use plain everyday language. Give a direct yes/no answer first when asked a
+  yes/no question.
 - Never call an item **passed** unless its stated check can be performed and
-  the result is recorded with evidence.
-- Keep facts, assumptions, and unanswered questions separate.
+  the result names its evidence and source.
+- Try the cheap safe check first. Stop after two failed attempts and name the
+  one owner and action needed next. Do not guess or turn a connector failure
+  into an answer.
+- Keep facts, assumptions, and unanswered questions separate. Do not reopen a
+  decision already recorded for this run.
 - Do not ask for credentials, exports, screenshots, or pasted client facts.
 
 ## Command contract
 
-Start with:
+Start by reading the request that is already available. If a Basecamp card is
+available, read its body and comments before asking anything. Lead with the
+next action, for example:
 
-> I will help you sort out the project safely. I will ask one question at a
-> time, explain what I am checking, and finish with what we know, what we do
-> not know, who owns the next step, and what happens next. This first step uses
-> blank reusable records only; it will not connect to a client system.
+> I’m starting with the existing request. I’m checking the approved evidence
+> location now. I can’t find the Drive folder yet. Can you send the direct link
+> to the Work Wonders pilot or troubleshooting folder?
 
-When this skill is connected to a supported interactive command, ask only this
-first question:
+Do not begin with a wall of blocked messages. If the request itself is missing,
+ask only:
 
-> What is the one thing you expected this project to do, and what happened
-> instead?
+> What did you expect the project to do, and what happened instead?
+
+The local operator helper is available for sanitized scenarios:
+
+```text
+npm run operate --prefix tools/troubleshooting-operator -- --input <sanitized-scenario.json>
+```
+
+It reads ticket body/comments, chooses one safe next move, checks the stated
+requirements, makes a staging comparison, and prepares an honest review packet.
+It does not open Basecamp, Drive, Claude Projects, or any connector.
 
 After each answer, briefly say what it means and ask the single next question
 that is necessary to clarify the problem. Use the templates in

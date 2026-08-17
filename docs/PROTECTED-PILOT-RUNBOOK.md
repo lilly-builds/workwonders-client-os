@@ -89,10 +89,15 @@ email, and live updates are separate approvals after this pilot passes.
 ### A. Preflight
 
 - Record the pilot scope, project ID/name, approved folder, and one Bug Board
-  card or approved card-creation scope. Record scheduling, email, and live
-  project details only when those optional paths are in scope.
+  card or approved card-creation scope. Record the single Work Wonders Claude
+  account that Claude Code will use and confirm the approved project is shared
+  to that account when needed. Record scheduling, email, and live project
+  details only when those optional paths are in scope.
 - Confirm the saved copy and Test Library are complete and belong to the same
   project.
+- Check every connector named by the selected Test Library. A missing, broken,
+  or wrong-tenant connector blocks only its named requirement; it cannot be
+  presented as a passing answer.
 - Confirm the repository is clean and the prior phase test suite passes.
 - Confirm a fresh reviewer has inspected the committed path.
 - Do not proceed if any external authorization is absent.
@@ -148,7 +153,9 @@ A manual command is local evidence only, not scheduled-run evidence.
 Only if the checklist authorizes it:
 
 - Record the exact live project ID/name and a separate candidate ID/name.
-- Confirm the candidate title begins `STAGING — ` and links back to live.
+- Confirm the candidate title is exactly `STAGING — [live project title]`, links
+  back to live, and has a routing line that names the staging skill by exact
+  title and forbids use of the production skill.
 - Apply only the approved change to candidate and run the full behavior set.
 - Obtain Lilly's review of the original question, fixed safety questions, and
   the open question “Does anything else look off?”.

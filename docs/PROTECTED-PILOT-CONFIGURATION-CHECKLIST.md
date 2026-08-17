@@ -20,7 +20,8 @@ shell-only command. Only the rows below are needed to start that pilot.
 |---|---|---|---|
 | Pilot scope | One approved non-client or test project, limits, dates, and owner | Lilly | **Missing** |
 | Saved-copy source | Read access to the approved saved copy and complete Test Library | Lilly | **Missing** |
-| Claude environment | Installed Client OS command, conversational entry point, and visible approval pauses | Lilly | **Missing** |
+| Claude environment | One named Work Wonders Claude account used by Claude Code; project access shared to that same account if needed; installed Client OS command and visible approval pauses. No prompt ferrying between browser and Claude Code. | Lilly + Jim | **Missing** |
+| Connector readiness | Every connector named by the selected Test Library is configured for the approved pilot tenant or is explicitly excluded from the pilot. Record the owner of each fix. | Lilly + connector owner | **Missing** |
 | Drive records | Exact folder and the smallest approved write scope for pilot records | Lilly | **Missing** |
 | Bug Board | Read access plus permission to respond to and change stage on one approved pilot card; no Update Board access needed | Lilly | **Missing** |
 | Fresh review | Reviewer who inspected the reachable path | Fresh reviewer | **Pending** |
@@ -46,6 +47,8 @@ Complete only after written approval exists.
 - Pilot scope:
 - Approved project ID/name:
 - Saved-copy location and read-only access confirmation:
+- Claude Code account and project-sharing confirmation:
+- Connector readiness results, expected tenant, and fix owner:
 - Drive folder link or sanitized locator:
 - Bug Board card ID:
 - Update Board card ID, if applicable:

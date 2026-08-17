@@ -18,6 +18,7 @@ change it, push it back, and prove the live project matches what you meant.
 | `skills/` | `backup-claude-projects` and the controlled `/update-client-project` front door |
 | `tools/claude-project-sync/` | The pull / push / diff / clone commands |
 | `tools/update-client-project/` | The approval, candidate, behavior, promotion, and release checks behind the one update front door |
+| `tools/troubleshooting-operator/` | Local-only ticket intake, next-move, requirement-checking, staging-comparison, and review-packet helpers |
 | `templates/` | Reusable project skeletons with the client details blanked out |
 | `templates/troubleshooting/` | Blank records for the safe troubleshooting workflow |
 | `rules/` | Reusable safety lessons that apply to every troubleshooting run |
@@ -45,6 +46,24 @@ profile.
 
 See [the troubleshooting guide](docs/TROUBLESHOOTING-FOUNDATION.md) for the
 record list, required fields, and local checks.
+
+### Operator-ready local helper
+
+The test feedback showed that the system needs to take the first useful step
+before asking an operator for setup help. The local helper reads a sanitized
+ticket body and comments, checks only the connectors named by that ticket,
+scores the stated requirements, compares a staging copy against the live
+baseline, and prepares a plain-language review packet.
+
+```bash
+npm run operate --prefix tools/troubleshooting-operator -- \
+  --input tests/fixtures/operator/ready-scenario.json
+```
+
+It is deliberately local-only: no Basecamp, Drive, Claude Project, email,
+connector, browser profile, or client data is accessed. See the
+[verification contract](docs/OPERATOR-READY-LOOP-VERIFICATION-CONTRACT.md) for
+what this proves and what remains blocked.
 
 ---
 

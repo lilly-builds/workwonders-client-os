@@ -1,0 +1,87 @@
+{
+  "ticket": {
+    "card_body": "",
+    "comments": [
+      {
+        "id": "C-1",
+        "body": "Please make the margin answer use the correct cost code."
+      }
+    ]
+  },
+  "evidence_home": "Drive/Pilot/TJ",
+  "connectors": {
+    "requested": [
+      {
+        "name": "Xcelerate",
+        "expected_tenant": "Patriot"
+      }
+    ],
+    "connectors": [
+      {
+        "name": "Xcelerate",
+        "status": "ready",
+        "tenant": "Patriot"
+      }
+    ]
+  },
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "The answer uses the correct cost code."
+    },
+    {
+      "id": "REQ-2",
+      "text": "The answer names its source."
+    }
+  ],
+  "requirement_results": [
+    {
+      "id": "REQ-1",
+      "status": "passed",
+      "evidence": "sanitized test response",
+      "source": "Xcelerate",
+      "attempt": 1
+    },
+    {
+      "id": "REQ-2",
+      "status": "passed",
+      "evidence": "sanitized test response",
+      "source": "project instructions",
+      "attempt": 1
+    }
+  ],
+  "live_project": {
+    "id": "LIVE-1",
+    "name": "Margin Helper",
+    "instructions": "Live instructions",
+    "files": [
+      {
+        "name": "rules.md",
+        "content": "rule text",
+        "source": "project knowledge"
+      }
+    ]
+  },
+  "staging_project": {
+    "id": "STAGING-1",
+    "name": "STAGING \u2014 Margin Helper",
+    "instructions": "Live instructions\nUse the account skill titled \"Margin Helper \u2014 STAGING\" for this STAGING project. Do not use the production skill.",
+    "files": [
+      {
+        "name": "rules.md",
+        "content": "rule text",
+        "source": "project knowledge"
+      }
+    ]
+  },
+  "staging": {
+    "live_title": "Margin Helper",
+    "candidate": {
+      "name": "STAGING \u2014 Margin Helper",
+      "instructions": "Live instructions\nUse the account skill titled \"Margin Helper \u2014 STAGING\" for this STAGING project. Do not use the production skill."
+    },
+    "staging_skill_title": "Margin Helper \u2014 STAGING"
+  },
+  "change_summary": "Use the approved cost-code rule in the answer.",
+  "rollback_plan": "Restore the saved live instructions and rules file."
+}

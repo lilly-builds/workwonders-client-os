@@ -3,7 +3,7 @@
 Read this before working in this repo. The README says what the tool does; this
 says why it exists and what has already been decided.
 
-Last updated: 7 August 2026.
+Last updated: 18 August 2026.
 
 ---
 
@@ -140,29 +140,49 @@ never used a terminal or GitHub, and cannot be handed a folder to maintain.
 
 ## Where things stand
 
-Built and verified against real projects:
+**Built and verified against real systems:**
 
 - `export` (pull), `push`, `diff`, `clone`, `backup-all` with filters
-- Skills: `backup-claude-projects` (read-only), `update-claude-project` (writes)
-- Plugin installs from the private repo; both skills load
+- Skills `backup-claude-projects` (read-only) and `update-claude-project` (writes)
+- Plugin installs from the private repo and its skills load
 - One folder layout, documented in `docs/FILE-STRUCTURE.md`, and both pull
   commands proven to produce it identically
 
 Evidence, not assertion: exported knowledge files were byte-identical to their
 originals; a cross-account clone was confirmed by re-reading the new project.
 
-Open:
+**Built and tested against fixtures only, never against a live system:**
 
-- **Never tested on Windows.** The first run should be a screen share.
-- **Jim needs a GitHub invitation** to install from a private repo.
-- **Client data in a repo has not been agreed.** The `.gitignore` keeps it out,
-  so this is not urgent, but it is Jim's call and it has not been asked.
+- Skills `debug-client-project` and `update-client-project`
+- 7 tool packages under `tools/`, 57 passing tests, 10 Drive record templates
+- The Basecamp adapters. Read `docs/BASECAMP-BOARD-CONTRACT.md` before trusting
+  them; it says plainly that they do not connect to Basecamp.
+
+Do not describe the second group as working. Nothing in it has run against a
+real Claude project, a real Basecamp card, or a real Drive folder, and
+`docs/PROTECTED-PILOT-RUNBOOK.md` is still marked blocked pending written
+authorization.
+
+**Open:**
+
+- **Never tested on Windows.** The first run should be a screen share, and Jim
+  is on Windows.
+- **The sync tool is not wired into the troubleshooting skills.** `export.mjs`,
+  `clone.mjs` and `push.mjs` genuinely talk to claude.ai, and the staging and
+  review logic in `tools/troubleshooting-operator/` is real, but nothing calls
+  one from the other. `debug-client-project` and `update-client-project` contain
+  no reference to the sync tool. This is the largest gap in the repo.
+- **The Test Library is empty.** The structure exists in the client Drive folder;
+  the questions do not. Nothing downstream can prove anything without it.
 - **Skills and project conversations are not pulled.** The endpoints exist
   (`skills/list-skills`, `projects/{uuid}/conversations_v2`). Conversations
   matter most: Jim's exact complaint is that he cannot share a chat between
   accounts, which is what forces the screenshots.
+- **Client data in a repo has not been agreed.** The `.gitignore` keeps it out,
+  so this is not urgent, but it is Jim's call and it has not been asked.
 
----
+Jim has repo access as a collaborator, so the older "Jim needs a GitHub
+invitation" item is closed.
 
 ## What comes next
 

@@ -2,10 +2,21 @@
 
 ## Naming decision
 
-`/update-client-project` **wraps** the existing `/update-claude-project` path.
-The old skill name is a backwards-compatible redirect only. Its sync scripts
-remain transport primitives; approval, candidate handling, behavior tests,
-promotion, and release proof live in one orchestration layer.
+`/update-client-project` **wraps** `/update-claude-project`; it does not replace
+it. Two commands, one writer:
+
+- `/update-client-project` decides whether a client change may happen. It owns
+  approval, candidate handling, behavior tests, promotion and release proof.
+- `/update-claude-project` performs the write. It owns the dry-run preview, the
+  plain-language plan, the named list of files that would be removed, and the
+  read-back that proves the live project matches what was approved.
+
+The front door must never grow its own push command, and the writer must never
+be emptied into a pointer back at the front door. An earlier revision made the
+writer a redirect stub, which left the whole update flow unable to reach Claude:
+each command pointed at the other and neither held the mechanics. The test
+`one front door, one writer, and the writer still works` in
+`tests/update-client-project.test.mjs` guards against that recurring.
 
 ## Behavior-test contract
 

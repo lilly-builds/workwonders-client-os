@@ -3,7 +3,7 @@
 | Layer | Connected path | Proof/status |
 | --- | --- | --- |
 | Operator entry | `/update-client-project` skill → controlled orchestration | locally tested |
-| Backwards compatibility | `/update-claude-project` is redirect-only | source review |
+| Writer | `/update-claude-project` holds the push/dry-run mechanics; front door calls it | unit tested |
 | File transport | existing sync tool used as a primitive | mocked; live unverified |
 | Target identity | exact live ID and candidate source link | unit tested |
 | Candidate | `STAGING — ` prefix, file/source comparison | mocked; live unverified |

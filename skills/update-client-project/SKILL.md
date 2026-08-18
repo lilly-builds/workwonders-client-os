@@ -5,9 +5,24 @@ description: The only approved front door for a controlled Client OS project upd
 
 # `/update-client-project`
 
-This command is the single update front door. It **wraps the existing
-`update-claude-project` sync tool** as a transport primitive; it does not add a
-second writer. The old skill is a backwards-compatible redirect to this one.
+This command is the single update front door **for a client project**. It does
+not write to Claude itself. The writing is done by `update-claude-project`,
+which holds the mechanics: the dry-run preview, the plain-language plan, the
+named list of files that would be removed, and the read-back that proves the
+live project matches what was approved.
+
+Two commands, two jobs, one writer:
+
+| | `update-client-project` (this one) | `update-claude-project` |
+|---|---|---|
+| Job | Decides whether a change is allowed to happen | Makes the change happen |
+| Holds | Approval, staging rules, checks, the release record | The push, clone, and read-back steps |
+| Use it for | Any change to a live client project | The transport step this command calls, or a non-client folder push |
+
+Use this command for client work. It calls the other one to do the write, after
+the controls below have passed. Do not run `push.mjs` or `clone.mjs` by hand for
+a client project: doing so skips the approval, the candidate test, and the
+release record.
 
 It requires an exact existing project ID, a named target, a visible preview,
 and Lilly's explicit approval before any write. It updates existing files only:

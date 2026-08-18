@@ -127,11 +127,27 @@ test('rollback failure is recorded and clearly reported', async () => {
   await assert.rejects(() => runControlledUpdate({ request: { live_project_id: live.uuid, proposed, write: true, named_target: 'Owner Intelligence', approval: { reviewer: 'Lilly', decision: 'approved' }, lilly_review: { reviewer: 'Lilly', decision: 'approved', reviewed_at: 'today' }, change_summary: 'fix', rollback_action: 'restore saved copy', permanent_check: { type: 'client Test Library', reference: 'TEST-2' }, candidate_owner: 'Lilly', staging_expiry: 'after promotion', staging_cleanup_rule: 'archive', candidate_skills_checked: true, live_skills_checked: true }, transport, behaviorRunner: async (_project, stage) => stage === 'candidate' ? { status: 'passed', open_question_reviewed: true, evidence_location: 'candidate-evidence' } : { status: 'failed', evidence_location: 'live-evidence' } }), /Rollback also failed/);
 });
 
-test('front door exists once and old name is redirect-only', async () => {
+test('one front door, one writer, and the writer still works', async () => {
+  // The earlier version of this test asserted that update-claude-project was a
+  // redirect stub AND that it did NOT contain `node src/push.mjs`. That locked
+  // the only working write path out of the repo: the front door delegated to a
+  // skill that had been emptied, so nothing in the update flow could reach
+  // Claude. The contract below is what was actually intended.
   const { readFile } = await import('node:fs/promises');
   const frontDoor = await readFile(new URL('../skills/update-client-project/SKILL.md', import.meta.url), 'utf8');
-  const oldDoor = await readFile(new URL('../skills/update-claude-project/SKILL.md', import.meta.url), 'utf8');
+  const writer = await readFile(new URL('../skills/update-claude-project/SKILL.md', import.meta.url), 'utf8');
+
+  // The front door decides whether a client change may happen, and names its writer.
   assert.match(frontDoor, /update-client-project/);
-  assert.match(oldDoor, /redirect-only/);
-  assert.doesNotMatch(oldDoor, /node src\/push\.mjs/);
+  assert.match(frontDoor, /update-claude-project/);
+
+  // The writer holds the mechanics, and they must not be hollowed out again.
+  assert.match(writer, /node src\/push\.mjs/);
+  assert.match(writer, /--dry-run/);
+
+  // Exactly one writer: the front door must not grow its own push command.
+  assert.doesNotMatch(frontDoor, /node src\/push\.mjs/);
+
+  // Neither file may point at the other as its only content.
+  assert.doesNotMatch(writer, /redirect-only/);
 });

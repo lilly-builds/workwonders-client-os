@@ -7,8 +7,8 @@
 
 ## Adapter boundaries
 
-- `createBugBoardAdapter` accepts only the approved Client Bug Board URL, validates the required fields and stages, and claims one investigation per card ID.
-- `createUpdateBoardAdapter` accepts only the approved Client Update Board URL, validates the required fields and stages, and claims one release action per card ID.
+- `createBugBoardAdapter` accepts only the approved Client Debug Tickets URL, validates the required fields and stages, and claims one investigation per card ID.
+- `createUpdateBoardAdapter` accepts only the approved Client Updates URL, validates the required fields and stages, and claims one release action per card ID.
 - `createIdempotencyStore(file)` is the persistence contract. A future real adapter must provide the same atomic `claim(kind, cardId, action)` behavior and retain claims durably; simultaneous claims must have one winner.
 - `linkCards` links bug and update IDs without merging their cards.
 - `knownCardIds` in a fetched board context lets the adapter reject an unknown card clearly.

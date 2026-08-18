@@ -1,6 +1,6 @@
 export const BOARDS = Object.freeze({
-  bugs: { key: 'bugs', name: 'Client Bug Board', url: 'https://app.basecamp.com/5730006/buckets/48267142/card_tables/10133060890', stages: ['New', 'In progress', 'Complete', 'Client verified complete'], fields: ['client', 'project', 'original_message', 'owner', 'next_action', 'evidence_links', 'final_client_email_link'] },
-  updates: { key: 'updates', name: 'Client Update Board', url: 'https://app.basecamp.com/5730006/buckets/48267142/card_tables/10197329775', stages: ['Proposed', 'Approved', 'Deployed', 'Verified', 'Blocked'], fields: ['client', 'project_id', 'linked_bug_card_id', 'change_summary', 'lilly_approver', 'release_record_link', 'post_update_check', 'rollback_action'] },
+  bugs: { key: 'bugs', name: 'Client Debug Tickets', url: 'https://app.basecamp.com/5730006/buckets/48267142/card_tables/10133060890', stages: ['New', 'In progress', 'Complete', 'Client verified complete'], fields: ['client', 'project', 'original_message', 'owner', 'next_action', 'evidence_links', 'final_client_email_link'] },
+  updates: { key: 'updates', name: 'Client Updates', url: 'https://app.basecamp.com/5730006/buckets/48267142/card_tables/10197329775', stages: ['Proposed', 'Approved', 'Deployed', 'Verified', 'Blocked'], fields: ['client', 'project_id', 'linked_bug_card_id', 'change_summary', 'lilly_approver', 'release_record_link', 'post_update_check', 'rollback_action'] },
 });
 export const BUG_STAGES = BOARDS.bugs.stages;
 export const UPDATE_STAGES = BOARDS.updates.stages;

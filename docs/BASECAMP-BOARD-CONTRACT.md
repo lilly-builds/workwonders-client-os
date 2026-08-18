@@ -2,17 +2,17 @@
 
 The real `/basecamp` skill or supported interface was not available in this worktree. These are safe, tested adapter boundaries only; they do not connect to Basecamp.
 
-## Client Bug Board
+## Client Debug Tickets
 
-Approved board: [Client Bug Board](https://app.basecamp.com/5730006/buckets/48267142/card_tables/10133060890)
+Approved board: [Client Debug Tickets](https://app.basecamp.com/5730006/buckets/48267142/card_tables/10133060890)
 
 Stages: **New → In progress → Complete → Client verified complete**.
 
 Required card fields: card ID, client, project, original client message, owner, next action, evidence links, and final client email link. One card represents one reported or detected problem. Lilly is the first owner when intake starts. Complete requires a proven cause, retest, broader checks, approved deployment when needed, a client email when applicable, and a permanent check. Silence never means client verified.
 
-## Client Update Board
+## Client Updates
 
-Approved board: [Client Update Board](https://app.basecamp.com/5730006/buckets/48267142/card_tables/10197329775)
+Approved board: [Client Updates](https://app.basecamp.com/5730006/buckets/48267142/card_tables/10197329775)
 
 Stages: **Proposed → Approved → Deployed → Verified**, or **Blocked**.
 

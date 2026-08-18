@@ -36,7 +36,7 @@ Leave these off for the recommended first pilot. Approve each separately.
 | Cloud schedule | Provider, account, secret reference, Sunday schedule/timezone, cost ceiling, and disable action | Lilly | **Off** |
 | Cloud alerts | Lilly destination and failure/stale alert permission | Lilly | **Off** |
 | Live update | Exact live project access, candidate creation, candidate ID/name, and cleanup decision | Lilly | **Off** |
-| Update Board | Client Update Board access and approved update card | Lilly | **Off** |
+| Update Board | Client Updates access and approved update card | Lilly | **Off** |
 | Microsoft email | Sender, recipient scope, and approval for client-facing email | Lilly | **Off** |
 | Claude Project | Exact non-client or real-client project ID/name and approved read/write scope | Lilly | **Off** |
 

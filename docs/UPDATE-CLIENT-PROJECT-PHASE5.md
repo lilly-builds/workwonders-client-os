@@ -59,11 +59,11 @@ The packet contains: change summary, target map, exact approved files, candidate
 behavior evidence, Lilly's review decision, promotion plan, rollback action,
 live proof, candidate owner, staging expiry/cleanup rule, and permanent check.
 The detailed packet and Release Record live in the client's
-Drive. The Client Update Board card links to them:
+Drive. The Client Updates card links to them:
 
 https://app.basecamp.com/5730006/buckets/48267142/card_tables/10197329775
 
-The Client Bug Board remains separate:
+The Client Debug Tickets remains separate:
 
 https://app.basecamp.com/5730006/buckets/48267142/card_tables/10133060890
 
@@ -86,5 +86,5 @@ The request cannot honestly close without that named permanent check.
 Prompt 6 needs written Lilly authorization for: a non-client or selected pilot
 project; read access to its saved/live project; candidate creation and exact
 live write; account-level Skill comparison if relevant; the client Drive
-Release Record location; the Client Update Board card; and any other provider
+Release Record location; the Client Updates card; and any other provider
 credentials. No email or Sunday schedule is needed for this phase.

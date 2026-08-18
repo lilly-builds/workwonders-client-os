@@ -47,7 +47,7 @@ system cannot work.
 Lilly should complete and sign
 `PROTECTED-PILOT-CONFIGURATION-CHECKLIST.md` for one approved non-client or
 test project. The first approval should cover only the saved-copy read path,
-the smallest Drive record write path, and one Client Bug Board card that can
+the smallest Drive record write path, and one Client Debug Tickets card that can
 be pulled, responded to, and moved through its bug stage using a manual
 trigger inside the Claude environment. No Update Board access is needed. It
 should explicitly keep email,

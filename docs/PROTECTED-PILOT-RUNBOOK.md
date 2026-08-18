@@ -57,7 +57,7 @@ The recommended first pilot is deliberately smaller than the full system:
 - a manual trigger from the Claude environment only;
 - a saved-copy read path and the smallest required Drive/board write path for
   the records being proven;
-- one Client Bug Board triage slice: pull one approved card, respond to it,
+- one Client Debug Tickets triage slice: pull one approved card, respond to it,
   and move it through the appropriate bug stage;
 - no Microsoft email;
 - no live update or candidate promotion;
@@ -72,7 +72,7 @@ email, and live updates are separate approvals after this pilot passes.
 
 1. Approved trigger: a named pilot issue entered in the Claude environment;
    scheduled triggers are excluded from the smallest pilot.
-2. The Client Bug Board card is pulled and its client/project identity is
+2. The Client Debug Tickets card is pulled and its client/project identity is
    checked before reading or writing.
 3. `/check-client-project` or `/debug-client-project` runs against the approved
    saved copy and complete Test Library.
@@ -104,7 +104,7 @@ email, and live updates are separate approvals after this pilot passes.
 
 ### B. Safe positive control
 
-- Pull one approved card from the Client Bug Board through the approved
+- Pull one approved card from the Client Debug Tickets through the approved
   Basecamp path.
 - Confirm the card has the required fields and starts in the expected stage.
 - Trigger the run from that card through the Claude environment's approved

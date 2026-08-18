@@ -35,7 +35,7 @@ reviewed by Lilly, and promoted by approved file list only. The whole candidate
 is never copied blindly.
 
 The promotion packet belongs in the client Drive release record and is linked
-from the approved Client Update Board card:
+from the approved Client Updates card:
 https://app.basecamp.com/5730006/buckets/48267142/card_tables/10197329775
 
 The behavior set asks the original problem question, the five safety questions

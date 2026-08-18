@@ -9,8 +9,8 @@
 | Checker / deep check | `/check-client-project` and existing investigation runner | Fixture tests exercise the local entry path |
 | Test Library | JSON format and loader | Fixture tests exercise required fields and all items |
 | Saved-copy source | Local JSON fixture | Real Drive or approved store unverified |
-| Bug Board | Separate validated adapter and idempotency boundary | Fake tests only; real `/basecamp` interface unavailable |
-| Update Board | Separate validated adapter and idempotency boundary | Fake tests only; no live update action |
+| Debug Tickets board | Separate validated adapter and idempotency boundary | Fake tests only; real `/basecamp` interface unavailable |
+| Updates board | Separate validated adapter and idempotency boundary | Fake tests only; no live update action |
 | Persistence | Control Center reports/issues plus idempotency JSON contract | Local writes tested; real Drive sync/storage unverified |
 | Monitoring / alerts | Contract documented only | No cloud runner, alert provider, or stale monitor built |
 | Operator output | CLI summary and report fields | Local output tested; Basecamp/operator surface unverified |

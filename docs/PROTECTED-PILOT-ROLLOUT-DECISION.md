@@ -20,8 +20,8 @@ system cannot work.
 | Local checker, investigation, and update guards | locally verified | 50 tests pass, including positive and negative controls |
 | Claude environment entry path | implemented, not fully tested | Conversational wiring has not yet proven the real Claude-session path |
 | Drive folder | blocked | No written folder/access confirmation |
-| Basecamp Bug Board | blocked | No written project/card access confirmation |
-| Basecamp Update Board | blocked | No written project/card access confirmation |
+| Basecamp Debug Tickets board | blocked | No written project/card access confirmation |
+| Basecamp Updates board | blocked | No written project/card access confirmation |
 | Cloud scheduler and monitoring | blocked | Provider, credentials, alert route, and schedule approval missing |
 | Microsoft email | blocked and off | No sender/recipient approval; no email sent |
 | Claude Project | blocked | No approved project identity/access |
@@ -49,7 +49,7 @@ Lilly should complete and sign
 test project. The first approval should cover only the saved-copy read path,
 the smallest Drive record write path, and one Client Debug Tickets card that can
 be pulled, responded to, and moved through its bug stage using a manual
-trigger inside the Claude environment. No Update Board access is needed. It
+trigger inside the Claude environment. No Updates board access is needed. It
 should explicitly keep email,
 live updates, cloud scheduling, and cloud alerts off. After that, run the
 manual pilot and save the exact evidence list in the runbook before considering

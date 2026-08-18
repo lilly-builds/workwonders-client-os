@@ -21,4 +21,4 @@ Use `docs/PROVIDER-DECISION-RECORD.md` to compare reliability, cost, safe access
 
 ## Prompt 5 boundary
 
-Prompt 5 may build the controlled update path. It must preserve the separate Update Board boundary, card-idempotency contract, card-linking contract, and the explicit statement that real Basecamp/cloud access is unverified. Sunday scheduling stays disabled. Prompt 6 is the only phase allowed to connect approved real systems.
+Prompt 5 may build the controlled update path. It must preserve the separate Updates board boundary, card-idempotency contract, card-linking contract, and the explicit statement that real Basecamp/cloud access is unverified. Sunday scheduling stays disabled. Prompt 6 is the only phase allowed to connect approved real systems.

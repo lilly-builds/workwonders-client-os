@@ -9,8 +9,8 @@ references only. Keep the actual secrets in the approved provider vault.
 
 ## Required for the basic protected pilot
 
-The basic pilot is one approved non-client or test project with one Client Bug
-Board triage card, a local/manual trigger, no email, no live update, no cloud
+The basic pilot is one approved non-client or test project with one Client Debug
+Tickets triage card, a local/manual trigger, no email, no live update, no cloud
 schedule, and read-only source access wherever possible. The pilot must pull
 the card, respond on the same card, and prove the stage change without creating
 a duplicate. The run must happen through the Claude environment, not a
@@ -23,7 +23,7 @@ shell-only command. Only the rows below are needed to start that pilot.
 | Claude environment | One named Work Wonders Claude account used by Claude Code; project access shared to that same account if needed; installed Client OS command and visible approval pauses. No prompt ferrying between browser and Claude Code. | Lilly + Jim | **Missing** |
 | Connector readiness | Every connector named by the selected Test Library is configured for the approved pilot tenant or is explicitly excluded from the pilot. Record the owner of each fix. | Lilly + connector owner | **Missing** |
 | Drive records | Exact folder and the smallest approved write scope for pilot records | Lilly | **Missing** |
-| Bug Board | Read access plus permission to respond to and change stage on one approved pilot card; no Update Board access needed | Lilly | **Missing** |
+| Debug Tickets board | Read access plus permission to respond to and change stage on one approved pilot card; no Updates board access needed | Lilly | **Missing** |
 | Fresh review | Reviewer who inspected the reachable path | Fresh reviewer | **Pending** |
 | Usability readout | Jim's plain-language readout | Jim | **Pending** |
 
@@ -36,7 +36,7 @@ Leave these off for the recommended first pilot. Approve each separately.
 | Cloud schedule | Provider, account, secret reference, Sunday schedule/timezone, cost ceiling, and disable action | Lilly | **Off** |
 | Cloud alerts | Lilly destination and failure/stale alert permission | Lilly | **Off** |
 | Live update | Exact live project access, candidate creation, candidate ID/name, and cleanup decision | Lilly | **Off** |
-| Update Board | Client Updates access and approved update card | Lilly | **Off** |
+| Updates board | Client Updates access and approved update card | Lilly | **Off** |
 | Microsoft email | Sender, recipient scope, and approval for client-facing email | Lilly | **Off** |
 | Claude Project | Exact non-client or real-client project ID/name and approved read/write scope | Lilly | **Off** |
 
@@ -50,8 +50,8 @@ Complete only after written approval exists.
 - Claude Code account and project-sharing confirmation:
 - Connector readiness results, expected tenant, and fix owner:
 - Drive folder link or sanitized locator:
-- Bug Board card ID:
-- Update Board card ID, if applicable:
+- Debug Tickets board card ID:
+- Updates board card ID, if applicable:
 - Cloud provider and schedule:
 - Alert destination:
 - Live/candidate Claude Project IDs and names:

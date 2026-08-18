@@ -77,7 +77,7 @@ email, and live updates are separate approvals after this pilot passes.
 3. `/check-client-project` or `/debug-client-project` runs against the approved
    saved copy and complete Test Library.
 4. A Health Report is written for a pass; a failure starts one deep check.
-5. The same Bug Board card receives the response, owner, next action, evidence
+5. The same Debug Tickets board card receives the response, owner, next action, evidence
    link, and correct stage. It is never duplicated.
 6. A next owner and next action are recorded.
 7. An approved update, if in scope, follows candidate testing, Lilly review,
@@ -88,7 +88,7 @@ email, and live updates are separate approvals after this pilot passes.
 
 ### A. Preflight
 
-- Record the pilot scope, project ID/name, approved folder, and one Bug Board
+- Record the pilot scope, project ID/name, approved folder, and one Debug Tickets board
   card or approved card-creation scope. Record the single Work Wonders Claude
   account that Claude Code will use and confirm the approved project is shared
   to that account when needed. Record scheduling, email, and live project
@@ -111,13 +111,13 @@ email, and live updates are separate approvals after this pilot passes.
   entry point.
 - Verify client/project identity before processing the saved copy.
 - Run every Test Library item; do not sample.
-- Confirm one Health Report, one response on the same Bug Board card, the
+- Confirm one Health Report, one response on the same Debug Tickets board card, the
   correct stage transition, and no duplicate records.
 - Record evidence references outside the repository.
 
 ### C. Safe negative control
 
-- Use an unknown project, malformed saved copy, or malformed Bug Board card in
+- Use an unknown project, malformed saved copy, or malformed Debug Tickets board card in
   the approved test area.
 - Confirm the run rejects it before a Drive or Basecamp write.
 - Confirm a failed check remains failed or needs review and starts one deep check.
@@ -127,7 +127,7 @@ email, and live updates are separate approvals after this pilot passes.
 - Stop or time out a run after a visible partial result.
 - Restart it using the same run ID.
 - Confirm partial work remains visible, the run resumes or safely re-runs, and
-  no investigation, Bug Board response, report, or alert is duplicated.
+  no investigation, Debug Tickets board response, report, or alert is duplicated.
 
 ### E. Regression and realistic sample controls
 
@@ -172,9 +172,9 @@ For the smallest safe pilot, save this exact evidence outside the repository:
 1. Run ID and trigger time.
 2. Complete Test Library results, including any failed or rejected test.
 3. The Health Report.
-4. The Bug Board card, stage, and link to the Drive record.
+4. The Debug Tickets board card, stage, and link to the Drive record.
 5. Failure and recovery evidence, including duplicate-protection results.
-6. The fetched Bug Board card ID, original stage, response, final stage, and
+6. The fetched Debug Tickets board card ID, original stage, response, final stage, and
    link to the Drive record.
 7. Claude session evidence showing each pause, proposed action, and approval.
 8. Lilly's reviewer sign-off and Jim's plain-language usability readout.
@@ -192,7 +192,7 @@ evidence.
 | Pilot identity | Scope, project ID, owner, and folder match | Pending | Outside repository |
 | Trigger | Approved entry point and run ID | Pending | Outside repository |
 | Drive record | Correct folder and one linked record | Pending | Outside repository |
-| Bug Board | Correct board/card/stage and link | Pending | Outside repository |
+| Debug Tickets board | Correct board/card/stage and link | Pending | Outside repository |
 | Check/deep check | Every test run; failure starts one deep check | Pending | Outside repository |
 | Next action | Named owner and action | Pending | Outside repository |
 | Release Record | Only for an approved live update | Not in smallest pilot | N/A |

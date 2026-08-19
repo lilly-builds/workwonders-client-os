@@ -112,7 +112,7 @@ a diff starts reporting differences that are not real.
 
 ## Controlled client updates
 
-`/update-client-project` is the only approved update entry point. It wraps the
+`/review-change` is the only approved update entry point. It wraps the
 sync tool's transport operations and adds the preview, exact-ID, approval,
-candidate, behavior, promotion, and release checks. `/update-claude-project`
+candidate, behavior, promotion, and release checks. `/update`
 is kept only as a redirect for old callers; it is not a second writer.

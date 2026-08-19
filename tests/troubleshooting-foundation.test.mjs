@@ -29,11 +29,11 @@ test('all ten named reusable templates declare required fields', async () => {
   }
 });
 
-test('the plugin discovers the debug-client-project skill through its normal skills directory', async () => {
+test('the plugin discovers the debug skill through its normal skills directory', async () => {
   const manifest = JSON.parse(await readFile(path.join(repoRoot, '.claude-plugin/plugin.json'), 'utf8'));
-  const skill = await readFile(path.join(repoRoot, 'skills/debug-client-project/SKILL.md'), 'utf8');
+  const skill = await readFile(path.join(repoRoot, 'skills/debug/SKILL.md'), 'utf8');
   assert.equal(manifest.skills, './skills/');
-  assert.match(skill, /^name: debug-client-project$/m);
+  assert.match(skill, /^name: debug$/m);
 });
 
 test('the fake-data dry run creates every named blank record', async () => {

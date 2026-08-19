@@ -1,4 +1,4 @@
-# `/debug-client-project` Phase 3 handoff
+# `/debug` Phase 3 handoff
 
 ## Status: engine locally verified, Claude conversation wiring not yet implemented
 

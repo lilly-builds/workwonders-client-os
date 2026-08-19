@@ -1,19 +1,19 @@
 ---
-name: update-client-project
-description: The only approved front door for a controlled Client OS project update.
+name: review-change
+description: The only approved front door for changing a live WorkWonders client Claude project. Requires an exact project ID, a visible preview, a staging candidate, behaviour tests, and Lilly's explicit approval before any write, then records the release and proves the live project matches what was approved. Use whenever a change is proposed, reviewed, or promoted to a client-facing Claude project. It calls the update skill to perform the write; never push to a client project directly.
 ---
 
-# `/update-client-project`
+# `/review-change`
 
 This command is the single update front door **for a client project**. It does
-not write to Claude itself. The writing is done by `update-claude-project`,
+not write to Claude itself. The writing is done by `update`,
 which holds the mechanics: the dry-run preview, the plain-language plan, the
 named list of files that would be removed, and the read-back that proves the
 live project matches what was approved.
 
 Two commands, two jobs, one writer:
 
-| | `update-client-project` (this one) | `update-claude-project` |
+| | `review-change` (this one) | `update` |
 |---|---|---|
 | Job | Decides whether a change is allowed to happen | Makes the change happen |
 | Holds | Approval, staging rules, checks, the release record | The push, clone, and read-back steps |

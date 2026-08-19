@@ -6,7 +6,7 @@
 |---|---|---|
 | Trigger | Local checker CLI and adapter methods | Tested locally; Sunday cloud trigger is not connected |
 | Authorization / client context | Explicit project ID, mode, board URL, card validation | Fake context tested; real auth and tenant permissions unverified |
-| Checker / deep check | `/check-client-project` and existing investigation runner | Fixture tests exercise the local entry path |
+| Checker / deep check | `/system-health-check` and existing investigation runner | Fixture tests exercise the local entry path |
 | Test Library | JSON format and loader | Fixture tests exercise required fields and all items |
 | Saved-copy source | Local JSON fixture | Real Drive or approved store unverified |
 | Debug Tickets board | Separate validated adapter and idempotency boundary | Fake tests only; real `/basecamp` interface unavailable |

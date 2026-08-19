@@ -1,6 +1,6 @@
 ---
-name: debug-client-project
-description: Start a safe, plain-language troubleshooting check for a Claude client project. Use when someone says "debug this client project", "troubleshoot a project", "something is wrong with the project", or asks for a structured investigation. This foundation uses reusable blank records only and never connects to a live client system.
+name: debug
+description: Starts a safe, plain-language troubleshooting investigation into a WorkWonders client's Claude project, working from a reported problem or a Client Debug Tickets card. Use when someone reports that a client Claude project is returning wrong, missing, or untrustworthy answers, or asks to investigate a client bug ticket. Asks one question at a time, keeps facts separate from guesses, and ends with what is known, what is not, who owns the next answer, and the next smallest action. Not for general software or code debugging.
 ---
 
 # Debug a client project

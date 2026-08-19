@@ -2,7 +2,7 @@
 
 ## Entry points
 
-- `/check-client-project` is represented by `tools/check-client-project/src/cli.mjs` and `runClientProjectCheck`. It accepts a saved-copy JSON fixture and a Test Library JSON file. In fake mode, a full pass writes one short Health Report; a failure automatically calls the existing deep-check runner once and writes its evidence packet.
+- `/system-health-check` is represented by `tools/check-client-project/src/cli.mjs` and `runClientProjectCheck`. It accepts a saved-copy JSON fixture and a Test Library JSON file. In fake mode, a full pass writes one short Health Report; a failure automatically calls the existing deep-check runner once and writes its evidence packet.
 - Test Library items require `test_id`, `purpose`, `setup`, `steps`, `expected_result`, `check_method`, `refresh_date`, `scope`, and `owner`. Every item is run; no sampling or reduced coverage is allowed. Each item must include refresh_date, scope (shared or client-specific), and owner.
 
 ## Adapter boundaries

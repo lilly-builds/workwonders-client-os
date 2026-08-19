@@ -12,7 +12,7 @@ Every Sunday, every active client-facing project is checked against its complete
 
 1. **Trigger:** approved cloud schedule on Sunday; exact time and timezone are still undecided.
 2. **Authorization and context:** runner identity is authorized for the approved saved-copy location, all active project IDs, Client Debug Tickets / Client Updates board context, and Lilly's alert destination. Least privilege and tenant/project matching must be proven.
-3. **Handler:** `/check-client-project` loads one saved copy and its Test Library, runs every test, writes one Health Report on pass, or starts one deep check on failure.
+3. **Handler:** `/system-health-check` loads one saved copy and its Test Library, runs every test, writes one Health Report on pass, or starts one deep check on failure.
 4. **Providers:** cloud scheduler/worker; saved-copy store; Client OS checker; Test Library; Drive or approved file store; Basecamp Debug Tickets board for work visibility; alert channel to Lilly. The real Basecamp connector is unbuilt and unverified.
 5. **Writes:** Health Report, deep-check investigation/Troubleshooting Card when needed, idempotency record, run status, and alert/audit record. A failed check must remain failed/needs review; tests are not dropped.
 6. **Operator output:** run ID, project counts, every pass/fail, report links, deep-check links, stale/failed state, next owner, and alert outcome.

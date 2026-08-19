@@ -1,6 +1,6 @@
 ---
-name: backup-claude-projects
-description: Back up Claude projects to files. Copies the custom instructions and every knowledge file out of claude.ai and onto disk, for one account or several, so projects can be read, compared, shared with teammates, restored, or reused as templates for a new client. Use when someone says "back up my Claude projects", "save my projects", "export my Claude project", "get a copy of my projects", "I need to see the projects in that account", or wants a project moved or copied between Claude accounts. Sets itself up on first run, including installing what it needs.
+name: backup
+description: Backs up Claude projects to files. Copies the custom instructions and every knowledge file out of claude.ai onto disk, for one account or several, so projects can be read, compared, restored, or reused as a template for a new client. Use when someone asks to back up, export, or save their Claude projects, or to get a readable copy of a project. Read-only: it never writes to a project. Sets itself up on first run, including installing what it needs.
 ---
 
 # Back up Claude projects

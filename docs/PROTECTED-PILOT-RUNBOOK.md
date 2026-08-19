@@ -74,7 +74,7 @@ email, and live updates are separate approvals after this pilot passes.
    scheduled triggers are excluded from the smallest pilot.
 2. The Client Debug Tickets card is pulled and its client/project identity is
    checked before reading or writing.
-3. `/check-client-project` or `/debug-client-project` runs against the approved
+3. `/system-health-check` or `/debug` runs against the approved
    saved copy and complete Test Library.
 4. A Health Report is written for a pass; a failure starts one deep check.
 5. The same Debug Tickets board card receives the response, owner, next action, evidence

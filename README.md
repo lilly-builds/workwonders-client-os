@@ -15,7 +15,7 @@ change it, push it back, and prove the live project matches what you meant.
 
 | Folder | What it holds |
 | --- | --- |
-| `skills/` | `backup-claude-projects` and the controlled `/update-client-project` front door |
+| `skills/` | `backup` and the controlled `/review-change` front door |
 | `tools/claude-project-sync/` | The pull / push / diff / clone commands |
 | `tools/update-client-project/` | The approval, candidate, behavior, promotion, and release checks behind the one update front door |
 | `tools/troubleshooting-operator/` | Local-only ticket intake, next-move, requirement-checking, staging-comparison, and review-packet helpers |
@@ -37,7 +37,7 @@ folder, and copying session cookies into a plugin cache is not acceptable.
 
 ## Troubleshooting foundation
 
-`/debug-client-project` is a safe starting point for diagnosing a client
+`/debug` is a safe starting point for diagnosing a client
 project. It asks one clear question at a time, says what it is doing, and ends
 by separating what is known from what still needs checking. It uses the blank
 reusable records in this repository as future reference material; it does not
@@ -73,7 +73,7 @@ Install it as a plugin and use the skill instead of the commands.
 
 1. Install the Claude Code desktop app and sign in
 2. **+ → Plugins → Add plugin**, and point it at this repo
-3. Type `/backup-claude-projects`
+3. Type `/backup`
 
 The skill sets up its own folder, installs what it needs, opens a Chrome window
 to sign into, and backs up every project the account can reach. It handles
@@ -129,7 +129,7 @@ it is." Exits non-zero when they differ, so it can gate another step.
 
 **Update a client project**
 
-Use `/update-client-project`, not a direct push. It requires an exact project
+Use `/review-change`, not a direct push. It requires an exact project
 ID, shows a preview, requires Lilly's approval, and records candidate/live proof.
 This phase only allows sanitized or mocked verification; it does not change a
 real client project.

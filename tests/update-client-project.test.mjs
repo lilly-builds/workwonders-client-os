@@ -134,12 +134,12 @@ test('one front door, one writer, and the writer still works', async () => {
   // skill that had been emptied, so nothing in the update flow could reach
   // Claude. The contract below is what was actually intended.
   const { readFile } = await import('node:fs/promises');
-  const frontDoor = await readFile(new URL('../skills/update-client-project/SKILL.md', import.meta.url), 'utf8');
-  const writer = await readFile(new URL('../skills/update-claude-project/SKILL.md', import.meta.url), 'utf8');
+  const frontDoor = await readFile(new URL('../skills/review-change/SKILL.md', import.meta.url), 'utf8');
+  const writer = await readFile(new URL('../skills/update/SKILL.md', import.meta.url), 'utf8');
 
   // The front door decides whether a client change may happen, and names its writer.
-  assert.match(frontDoor, /update-client-project/);
-  assert.match(frontDoor, /update-claude-project/);
+  assert.match(frontDoor, /`review-change`/);
+  assert.match(frontDoor, /`update`/);
 
   // The writer holds the mechanics, and they must not be hollowed out again.
   assert.match(writer, /node src\/push\.mjs/);

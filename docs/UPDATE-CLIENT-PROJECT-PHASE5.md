@@ -2,12 +2,12 @@
 
 ## Naming decision
 
-`/update-client-project` **wraps** `/update-claude-project`; it does not replace
+`/review-change` **wraps** `/update`; it does not replace
 it. Two commands, one writer:
 
-- `/update-client-project` decides whether a client change may happen. It owns
+- `/review-change` decides whether a client change may happen. It owns
   approval, candidate handling, behavior tests, promotion and release proof.
-- `/update-claude-project` performs the write. It owns the dry-run preview, the
+- `/update` performs the write. It owns the dry-run preview, the
   plain-language plan, the named list of files that would be removed, and the
   read-back that proves the live project matches what was approved.
 

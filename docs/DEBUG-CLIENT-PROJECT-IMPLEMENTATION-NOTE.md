@@ -2,7 +2,7 @@
 
 ## Implemented through Phase 2
 
-- **Phase 1 foundation:** `skills/debug-client-project/SKILL.md` provides the
+- **Phase 1 foundation:** `skills/debug/SKILL.md` provides the
   one-question-at-a-time intake contract, shared rules, blank record shapes,
   and the checkable-evidence rule for any `passed` result.
 - **Phase 2 folder adapter:** `tools/troubleshooting-folder` creates and

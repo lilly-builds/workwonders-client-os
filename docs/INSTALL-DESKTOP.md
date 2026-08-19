@@ -59,7 +59,7 @@ If it says it cannot find the repository, that almost always means step 2 is
 incomplete: either the invitation was not accepted, or Claude Code is signed
 into a different GitHub account than the one that was invited.
 
-If `/backup-claude-projects` is not recognised after installing, you almost
+If `/backup` is not recognised after installing, you almost
 certainly skipped the restart. Quit the app fully and reopen it.
 
 ---
@@ -69,7 +69,7 @@ certainly skipped the restart. Quit the app fully and reopen it.
 Type this in the chat box:
 
 ```
-/backup-claude-projects
+/backup
 ```
 
 Claude takes it from there. It will:
@@ -90,13 +90,13 @@ the window it opens, and say which projects to include.
 The other command goes the other way:
 
 ```
-/update-client-project
+/review-change
 ```
 
 Point it at a folder of project files and it will show a controlled update
 preview for the exact named project. Lilly approval, candidate checks, behavior
 proof, and the release record are required before a live change. The old
-`/update-claude-project` name remains only as a redirect.
+`/update` name remains only as a redirect.
 
 It always shows you exactly what will change and waits for you to agree,
 before anything happens. It calls out any file that would be removed, since

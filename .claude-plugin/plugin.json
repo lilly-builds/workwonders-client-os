@@ -1,6 +1,6 @@
 {
   "name": "workwonders-client-os",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Back up, restore, and reuse Claude projects as files",
   "keywords": ["claude-projects", "backup", "export", "templates"],
   "author": {

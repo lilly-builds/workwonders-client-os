@@ -143,7 +143,7 @@ never used a terminal or GitHub, and cannot be handed a folder to maintain.
 **Built and verified against real systems:**
 
 - `export` (pull), `push`, `diff`, `clone`, `backup-all` with filters
-- Skills `backup-claude-projects` (read-only) and `update-claude-project` (writes)
+- Skills `backup` (read-only) and `update` (writes)
 - Plugin installs from the private repo and its skills load
 - One folder layout, documented in `docs/FILE-STRUCTURE.md`, and both pull
   commands proven to produce it identically
@@ -153,7 +153,7 @@ originals; a cross-account clone was confirmed by re-reading the new project.
 
 **Built and tested against fixtures only, never against a live system:**
 
-- Skills `debug-client-project` and `update-client-project`
+- Skills `debug` and `review-change`
 - 7 tool packages under `tools/`, 57 passing tests, 10 Drive record templates
 - The Basecamp adapters. Read `docs/BASECAMP-BOARD-CONTRACT.md` before trusting
   them; it says plainly that they do not connect to Basecamp.
@@ -170,7 +170,7 @@ authorization.
 - **The sync tool is not wired into the troubleshooting skills.** `export.mjs`,
   `clone.mjs` and `push.mjs` genuinely talk to claude.ai, and the staging and
   review logic in `tools/troubleshooting-operator/` is real, but nothing calls
-  one from the other. `debug-client-project` and `update-client-project` contain
+  one from the other. `debug` and `review-change` contain
   no reference to the sync tool. This is the largest gap in the repo.
 - **The Test Library is empty.** The structure exists in the client Drive folder;
   the questions do not. Nothing downstream can prove anything without it.

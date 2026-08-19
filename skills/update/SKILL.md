@@ -1,6 +1,6 @@
 ---
-name: update-claude-project
-description: Put files back into Claude. Takes a folder of project files (instructions and knowledge files) and either updates an existing Claude project or creates a new one from it. Use when someone says "update the project in Claude", "push these changes to Claude", "upload this to Claude", "restore a project", "put this back", "roll back a project", "copy this project to another account", "set up a new client project from this one", or "make a project from these files". Changes only what differs and checks its own work afterwards.
+name: update
+description: Writes a folder of files on disk into Claude, either updating an existing Claude project or creating a new one, in the same account or a different one. Use only when the request is explicitly about pushing local project files into claude.ai, restoring or rolling back a Claude project, or copying a project between Claude accounts. This is the write engine of WorkWonders Client OS. For any change to a live client project use the review-change skill instead, which calls this one after approval. Not for general file edits, git, or deployments.
 ---
 
 # Update a Claude project from files
@@ -21,7 +21,7 @@ Say what will change before it changes, in plain language.
 ## Before anything
 
 You need the tool set up and a signed-in browser. This is the same setup the
-`backup-claude-projects` skill does, so if that has been run, reuse it: same
+`backup` skill does, so if that has been run, reuse it: same
 tool folder, same Chrome profile, same port.
 
 If not, do those steps first (copy the tool out of `${CLAUDE_PLUGIN_ROOT}`,
@@ -90,7 +90,7 @@ place. Say so and give the URL, so a half-filled project is never a mystery.
 
 To move a project from one Claude account to another:
 
-1. Back up from the first account (the `backup-claude-projects` skill)
+1. Back up from the first account (the `backup` skill)
 2. Sign into the second account in its own Chrome window, on its own port
 3. Create it there from that folder, with `clone.mjs` and the second port
 
